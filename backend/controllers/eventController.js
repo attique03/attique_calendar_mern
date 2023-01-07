@@ -60,13 +60,13 @@ const deleteEvent = (req, res) => {
 };
 
 const createEvent = (req, res) => {
-  const { startTime, endTime, name, location } = req.body;
+  const { startTime, endTime, name, location, allDay } = req.body;
   const event = new Event({
     startTime,
     endTime,
     name,
     location,
-    allDay: false,
+    allDay,
     user: req.user._id,
   });
 
@@ -74,7 +74,6 @@ const createEvent = (req, res) => {
     .save()
     .then(() => {
       res.status(201).json(event);
-      // res.sendFile(path.join(__dirname, "../views/events.html"));
     })
     .catch((err) => {
       console.log(err);

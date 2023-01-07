@@ -6,13 +6,25 @@ import {
   userLogoutReducer,
   userRegisterReducer,
 } from "./reducers/userReducers";
-import { eventCreateReducer } from "./reducers/eventReducers";
+import {
+  eventAllDayListReducer,
+  eventCreateReducer,
+  eventDeleteReducer,
+  eventDetailsReducer,
+  eventListReducer,
+  eventUpdateReducer,
+} from "./reducers/eventReducers";
 
 const reducer = combineReducers({
   userRegister: userRegisterReducer,
   userLogin: userLoginReducer,
   userLogout: userLogoutReducer,
   eventCreate: eventCreateReducer,
+  eventList: eventListReducer,
+  eventAllDayList: eventAllDayListReducer,
+  eventDetails: eventDetailsReducer,
+  eventDelete: eventDeleteReducer,
+  eventUpdate: eventUpdateReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
@@ -20,10 +32,6 @@ const userInfoFromStorage = localStorage.getItem("userInfo")
   : null;
 
 const initialState = {
-  //   cart: {
-  //     cartItems: cartItemsFromStorage,
-  //     shippingAddress: shippingAddressFromStorage,
-  //   },
   userLogin: { userInfo: userInfoFromStorage },
 };
 

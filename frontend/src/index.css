@@ -1,46 +1,23 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&display=swap");
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-} /* align-items: flex-end; */
+  font-family: "Inter", sans-serif;
+
+}
 
 body {
   background-color: #ccc;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   color: #222;
-  position: relative;
-  /* min-height: 100vh; */
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 1500px;
   margin: 50px auto;
   padding: 0 20px;
 }
 
 /* ________________ modal _____________ */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Inter", sans-serif;
-}
-
-/* body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #222;
-  position: relative;
-  min-height: 100vh;
-  background-color: #b3e6f4;
-} */
-
 .modal {
   display: flex;
   flex-direction: column;
@@ -137,21 +114,14 @@ header {
 .all-day-section {
   display: flex;
   flex-direction: column;
-  /* padding: 20px 0px;
-  background-color: #ffffff;
-  color: green;
-  opacity: 0.9; */
   margin: 2px 0 2px 100px;
 }
 
 .green {
-  /* flex: 1%; */
   background-color: RGB(68, 212, 59);
-  /* width: 10px; */
 }
 
 .all-day-event-data {
-  /* flex: 99%; */
   padding: 10px 0px 10px 10px;
   background-color: #ffffff;
   opacity: 0.9;
@@ -174,10 +144,6 @@ header {
 .sample-item {
   color: black;
 }
-
-/* .all-day-section:nth-child(4) {
-  color: green;
-} */
 
 .event {
   display: flex;
@@ -202,7 +168,6 @@ header {
   opacity: 0.9;
   font-size: 14px;
   margin-left: 50px;
-  /* width: 100% */
 }
 
 .all-day {
@@ -230,16 +195,12 @@ header {
   display: flex;
   flex-direction: column;
   flex: 95%;
-  /* align-items: center; */
 }
 
 .am-content {
   flex: 90%;
   display: flex;
   border-bottom: 1px solid black;
-
-  /* Additional */
-  /* height: 66.5%; */
 }
 
 .am-content > span {
@@ -268,12 +229,6 @@ header {
   height: 50%;
 }
 
-/* .full {
-  border-bottom: 1px solid #000000;
-  margin-top: 50px;
-  padding-right: 500px;
-} */
-
 /* ________________ PM _____________ */
 
 .pm {
@@ -291,12 +246,6 @@ header {
   font-size: 25px;
   padding-top: 10px;
 }
-
-/* .pm {
-  display: flex;
-  background-color: rgba(198, 233, 255, 0.3);
-  border-top: rgb(119, 191, 245);
-} */
 
 /* _____________________________ Original _______________________________ */
 body {
@@ -340,6 +289,7 @@ form {
   border-radius: 10px;
   background: white;
 }
+
 input {
   padding: 10px 12px;
   border-radius: 4px;
@@ -347,14 +297,15 @@ input {
   font-size: 1em;
   width: 100%;
 }
+
 label {
   display: block;
   margin: 20px 0 10px;
 }
+
 button {
   margin-top: 30px;
   border-radius: 6px;
-  /* background: #FEE996; */
   background: #212121fa;
   color: #fff;
   border: 0;
@@ -363,8 +314,8 @@ button {
   font-size: 0.8em;
   display: block;
   padding: 10px 16px;
-  /* letter-spacing: 2px; */
 }
+
 .error {
   color: #ff0099;
   margin: 10px 2px;
@@ -379,7 +330,6 @@ nav {
   display: flex;
   justify-content: space-between;
   margin-bottom: 60px;
-  /* padding-bottom: 10px; */
   padding: 0 30px 10px 30px;
   border-bottom: 1px solid #ddd;
   text-transform: uppercase;
@@ -485,7 +435,6 @@ textarea {
 
 .create-blog button {
   margin-top: 20px;
-  /* background: crimson; */
   background: #212121fa;
   color: white;
   padding: 6px;
@@ -497,17 +446,3 @@ textarea {
 footer {
   margin-top: 50vh;
 }
-
-/* body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-} */

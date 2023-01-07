@@ -1,40 +1,21 @@
-import React from 'react'
+import React from "react";
+// import convertToActualTime from "../utils/convertTime";
 
-const EventContent = ({ eventId }) => {
+const EventContent = ({ startTime, name, location, eventId, contentHeight }) => {
+  console.log("Content Data ", startTime, eventId, contentHeight);
   return (
-    <div className='event-content' id={`${eventId}`}>
-
+    <div
+      className="event event-content"
+      style={{ height: contentHeight+"px" }}
+      id={`${eventId}`}
+    >
+      <span className="all-day">{startTime}</span>
+      <b className="sample-item">{name}</b>
+      <span className="sample-location" style={{ marginLeft: "0px" }}>
+        {location}
+      </span>
     </div>
-  )
-}
+  );
+};
 
-// function eventContent(startTime, name, location, eventId) {
-//     const eventDiv = document.createElement("div");
-//     eventDiv.classList.add("event-content");
-//     eventDiv.id = eventId;
-  
-//     const eventTime = document.createElement("span");
-//     eventTime.classList.add("all-day");
-//     eventTime.textContent = convertToActualTime(startTime);
-  
-//     const eventName = document.createElement("b");
-//     eventName.classList.add("sample-item");
-//     eventName.textContent = name;
-  
-//     const eventLocation = document.createElement("span");
-//     eventLocation.classList.add("sample-location");
-//     eventLocation.textContent = location;
-//     eventLocation.style.marginLeft = "0px";
-  
-//     const eventFlex = document.querySelector(".event");
-//     const eventDivData = eventFlex.appendChild(eventDiv);
-//     eventDivData.appendChild(eventTime);
-//     eventDivData.appendChild(eventName);
-//     eventDivData.appendChild(eventLocation);
-  
-//     return eventDiv;
-//   }
-
-
-
-export default EventContent
+export default EventContent;

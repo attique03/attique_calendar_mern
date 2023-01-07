@@ -211,10 +211,12 @@ function createEvent(startTime, endTime, name, location, eventId) {
     newEvent = events[startTime - 2].appendChild(
       eventContent(startTime, name, location, eventId)
     );
+    console.log("New Event: ", newEvent);
   } else {
     newEvent = events[startTime].appendChild(
       eventContent(startTime, name, location, eventId)
     );
+    console.log("New Event: ", newEvent);
   }
 
   newEvent.dataset.target = "#myModal";

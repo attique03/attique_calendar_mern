@@ -5,13 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { EVENT_CREATE_RESET } from "../constants/eventConstants";
 
 const EventCreateScreen = () => {
-  const [startTime, setStartTime] = useState();
-  const [endTime, setEndTime] = useState();
+  const [startTime, setStartTime] = useState("1");
+  const [endTime, setEndTime] = useState("2");
   const [name, setName] = useState();
   const [location, setLocation] = useState();
+  const [isAllDay, setIsAllDay] = useState(false);
 
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
 
   const eventCreate = useSelector((state) => state.eventCreate);
@@ -27,12 +27,23 @@ const EventCreateScreen = () => {
   const createEventHandler = (e) => {
     e.preventDefault();
     console.log("Data ", startTime, endTime, name, location);
-    dispatch(createEvent({ startTime, endTime, name, location }));
+    dispatch(
+      createEvent({ startTime, endTime, name, location, allDay: false })
+    );
   };
 
   return (
     <div class="create-blog content">
       <form onSubmit={createEventHandler}>
+        <div style={{ display: "flex" }}>
+          <input type="radio" id="html" name="fav_language" value="HTML" />
+          <label for="html">HTML</label>
+          <br />
+          <input type="radio" id="css" name="fav_language" value="CSS" />
+          <label for="css">CSS</label>
+          <br />
+        </div>
+
         <label for="start">Start Time:</label>
         <select
           id="start"

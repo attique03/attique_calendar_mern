@@ -14,7 +14,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<HomeScreen />} />
-        <Route path="/login" element={<LoginScreen />} />
+        <Route path="/login" element={<LoginScreen /> } />
         <Route path="/register" element={<RegisterScreen />} />
         <Route path="/calendar" element={<CalendarScreen />} />
         <Route path="/createEvent" element={<EventCreateScreen />} />
