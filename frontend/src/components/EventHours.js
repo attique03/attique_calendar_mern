@@ -1,19 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { amHours, pmHours } from "../utils/Hours.js";
 import EventContent from "../components/EventContent.js";
 
 const EventHours = ({ time, events }) => {
-  // console.log("Events ===> ", events);
-  // time.map(event => (
-  console.log("Event ===> ", String(time.id + 1));
-  // ))
   return (
-    <div class="am-content">
-      <span class="full">{time.full}</span>
+    <div className="am-content">
+      <span className="full">{time.full}</span>
 
-      <div class="am-inner-content">
-        <div class="half" id={`event-${time.id}`}>
-          <div class="event">
+      <div className="am-inner-content">
+        <div className="half" id={`event-${time.id}`}>
+          <div className="event">
             {/* {events.map(
               (event, i) =>
                 event.startTime === String(time.id) && (
@@ -26,41 +22,30 @@ const EventHours = ({ time, events }) => {
             )} */}
           </div>
         </div>
-        <div class="event" id={`event-${time.id + 1}`}>
+        <div className="event" id={`event-${time.id + 1}`}>
           {events.map(
-            (event, i) =>
+            (event, index) =>
               (event.startTime === String(time.id + 1) ||
                 event.startTime === String(time.id)) && (
                 <EventContent
-                  startTime={event.startTime}
-                  name={event.name}
-                  location={event.location}
-                  eventId={event._id}
+                 event={event}
                   contentHeight={
                     event.startTime % 2 === 0
-                      ? (event.endTime - event.startTime) * 37.2
-                      : (event.endTime - event.startTime) * 33.5
+                      ? (event.endTime - event.startTime) * 39
+                      : (event.endTime - event.startTime) * 37.5
                   }
+                  contentMargin={event.startTime % 2 === 0 && 30.5}
+                  // style={{marginTop: "15.5px"}}
+                  key={index}
                 />
               )
           )}
         </div>
 
-        <div class="am-inner-half">{time.half}</div>
+        <div className="am-inner-half">{time.half}</div>
       </div>
     </div>
   );
 };
-
-<div class="am-content">
-  <span class="full">10:00</span>
-  <div class="am-inner-content">
-    <div class="half" id="event-3">
-      <div class="event"></div>
-    </div>
-    <div class="event" id="event-4"></div>
-    <div class="am-inner-half">10:30</div>
-  </div>
-</div>;
 
 export default EventHours;

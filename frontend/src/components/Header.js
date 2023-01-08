@@ -15,14 +15,9 @@ const Header = () => {
   const userLogout = useSelector((state) => state.userLogout);
   const { loading, success, error } = userLogout;
 
-  console.log("Success ", success, userInfo);
-
-  useEffect(() => {
-    console.log('Logout');
-  }, [success, userInfo, navigate]);
+  useEffect(() => {}, [success, userInfo, navigate]);
 
   const logoutHandler = () => {
-    console.log("Logoout ");
     dispatch(logout());
     navigate("/");
   };

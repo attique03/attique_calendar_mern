@@ -1,20 +1,48 @@
-import React from "react";
-// import convertToActualTime from "../utils/convertTime";
+import React, { useState, useRef, useEffect } from "react";
+import EventsModal from "./modal/EventsModal.js";
+import convertToActualTime from "../utils/ConvertTime.js";
 
-const EventContent = ({ startTime, name, location, eventId, contentHeight }) => {
-  console.log("Content Data ", startTime, eventId, contentHeight);
+const EventContent = ({ event, contentHeight, contentMargin }) => {
+  const [modalShow, setModalShow] = useState(false);
+  const [eventData, setEventData] = useState(null);
+  const eventRef = useRef();
+
+  useEffect(() => {
+    // if (event.startTime % 2 === 0) {
+    //   eventRef.current.style.marginTop = "30.5px";
+    // }
+
+    // console.log("Event Data ", eventData);
+  }, []);
+
   return (
-    <div
-      className="event event-content"
-      style={{ height: contentHeight+"px" }}
-      id={`${eventId}`}
-    >
-      <span className="all-day">{startTime}</span>
-      <b className="sample-item">{name}</b>
-      <span className="sample-location" style={{ marginLeft: "0px" }}>
-        {location}
-      </span>
-    </div>
+    <>
+      <EventsModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        event={eventData}
+      />
+
+      <div
+        className="event event-content"
+        ref={eventRef}
+        style={{
+          height: contentHeight + "px",
+          marginTop: contentMargin + "px",
+        }}
+        id={`${event._id}`}
+        onClick={() => {
+          setModalShow(true);
+          setEventData(event);
+        }}
+      >
+        <span className="all-day">{convertToActualTime(event.startTime)}</span>
+        <b className="sample-item">{event.name}</b>
+        <span className="sample-location" style={{ marginLeft: "0px" }}>
+          {event.location}
+        </span>
+      </div>
+    </>
   );
 };
 

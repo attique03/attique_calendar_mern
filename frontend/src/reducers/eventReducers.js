@@ -1,4 +1,8 @@
 import {
+  EVENT_ALLDAY_CREATE_FAIL,
+  EVENT_ALLDAY_CREATE_REQUEST,
+  EVENT_ALLDAY_CREATE_RESET,
+  EVENT_ALLDAY_CREATE_SUCCESS,
   EVENT_ALLDAY_LIST_FAIL,
   EVENT_ALLDAY_LIST_REQUEST,
   EVENT_ALLDAY_LIST_SUCCESS,
@@ -36,6 +40,21 @@ export const eventCreateReducer = (state = {}, action) => {
   }
 };
 
+export const eventAllDayCreateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case EVENT_ALLDAY_CREATE_REQUEST:
+      return { loading: true };
+    case EVENT_ALLDAY_CREATE_SUCCESS:
+      return { loading: false, success: true, eventAllDay: action.payload };
+    case EVENT_ALLDAY_CREATE_FAIL:
+      return { loading: false, error: action.payload };
+    case EVENT_ALLDAY_CREATE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
 export const eventListReducer = (state = { users: [] }, action) => {
   switch (action.type) {
     case EVENT_LIST_REQUEST:
@@ -54,7 +73,7 @@ export const eventAllDayListReducer = (state = { users: [] }, action) => {
     case EVENT_ALLDAY_LIST_REQUEST:
       return { loading: true };
     case EVENT_ALLDAY_LIST_SUCCESS:
-      return { loading: false, events: action.payload };
+      return { loading: false, eventsAllDay: action.payload };
     case EVENT_ALLDAY_LIST_FAIL:
       return { loading: false, error: action.payload };
     default:
@@ -78,9 +97,9 @@ export const eventDetailsReducer = (state = { user: {} }, action) => {
 export const eventDeleteReducer = (state = {}, action) => {
   switch (action.type) {
     case EVENT_DELETE_REQUEST:
-      return { loading: true }; // we Show whatever in this state using spread Operator
+      return { loading: true };
     case EVENT_DELETE_SUCCESS:
-      return { loading: false, success: true }; // we didnt return anything from Server, so sucess true
+      return { loading: false, success: true };
     case EVENT_DELETE_FAIL:
       return { loading: false, error: action.payload };
     default:
@@ -97,7 +116,7 @@ export const eventUpdateReducer = (state = { event: {} }, action) => {
       return { loading: false, error: action.payload };
     case EVENT_UPDATE_RESET:
       return {
-        product: {},
+        event: {},
       };
     default:
       return state;

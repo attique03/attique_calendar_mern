@@ -7,6 +7,7 @@ import {
   userRegisterReducer,
 } from "./reducers/userReducers";
 import {
+  eventAllDayCreateReducer,
   eventAllDayListReducer,
   eventCreateReducer,
   eventDeleteReducer,
@@ -20,6 +21,7 @@ const reducer = combineReducers({
   userLogin: userLoginReducer,
   userLogout: userLogoutReducer,
   eventCreate: eventCreateReducer,
+  eventAllDayCreate: eventAllDayCreateReducer,
   eventList: eventListReducer,
   eventAllDayList: eventAllDayListReducer,
   eventDetails: eventDetailsReducer,

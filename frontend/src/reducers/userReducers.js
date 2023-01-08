@@ -13,7 +13,6 @@ import {
 } from "../constants/userConstants";
 
 export const userRegisterReducer = (state = {}, action) => {
-  console.log("reducer => ", action.payload);
   switch (action.type) {
     case USER_REGISTER_REQUEST:
       return { loading: true };
@@ -35,7 +34,6 @@ export const userLoginReducer = (state = {}, action) => {
     case USER_LOGIN_SUCCESS:
       return { loading: false, userInfo: action.payload.token };
     case USER_LOGIN_FAIL:
-      console.log("Login Fail");
       return { loading: false, error: action.payload };
     // case USER_LOGOUT:
     //   return {};

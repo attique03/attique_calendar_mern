@@ -13,8 +13,7 @@ const EventsScreen = () => {
   useEffect(() => {
     dispatch(listEvents());
   }, [dispatch]);
-
-  console.log("events ", events);
+  
   return (
     <div className="container">
       <header>Friday, January 6</header>

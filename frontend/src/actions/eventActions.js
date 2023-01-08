@@ -1,5 +1,8 @@
 import axios from "axios";
 import {
+  EVENT_ALLDAY_CREATE_FAIL,
+  EVENT_ALLDAY_CREATE_REQUEST,
+  EVENT_ALLDAY_CREATE_SUCCESS,
   EVENT_ALLDAY_LIST_FAIL,
   EVENT_ALLDAY_LIST_REQUEST,
   EVENT_ALLDAY_LIST_SUCCESS,
@@ -51,6 +54,45 @@ export const createEvent =
     } catch (error) {
       dispatch({
         type: EVENT_CREATE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const createAllDayEvent =
+  ({ name, location }) =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: EVENT_ALLDAY_CREATE_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        cookies: {
+          jwt: `${userInfo}`,
+        },
+      };
+
+      const { data } = await axios.post(
+        "/api/events/createAllDay",
+        { name, location },
+        config
+      );
+
+      dispatch({
+        type: EVENT_ALLDAY_CREATE_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: EVENT_ALLDAY_CREATE_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
@@ -142,7 +184,7 @@ export const deleteEvent = (id) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.delete(`/api/events/delete/${id}`, config);
+    await axios.delete(`/api/events/delete/${id}`, config);
 
     dispatch({
       type: EVENT_DELETE_SUCCESS,
@@ -159,6 +201,8 @@ export const deleteEvent = (id) => async (dispatch, getState) => {
 };
 
 export const updateEvent = (id, event) => async (dispatch, getState) => {
+  console.log("Id ", id);
+  console.log("Event ", event);
   try {
     dispatch({
       type: EVENT_UPDATE_REQUEST,
@@ -175,7 +219,6 @@ export const updateEvent = (id, event) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.put(`/api/events/update/${id}`, event, config);
-
 
     dispatch({
       type: EVENT_UPDATE_SUCCESS,

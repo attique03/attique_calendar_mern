@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../actions/userActions";
 import { useNavigate } from "react-router-dom";
 
-const LoginScreen = () => {
+const AuthUserScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -50,4 +50,4 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default AuthUserScreen;
