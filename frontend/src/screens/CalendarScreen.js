@@ -23,6 +23,7 @@ const CalendarScreen = () => {
     dispatch(listEvents());
     dispatch(listAllDayEvents());
   }, [dispatch]);
+  console.log('Testing');
 
   return (
     <>
