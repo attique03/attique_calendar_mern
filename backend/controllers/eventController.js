@@ -60,13 +60,13 @@ const deleteEvent = (req, res) => {
 };
 
 const createEvent = (req, res) => {
-  const { startTime, endTime, name, location, allDay } = req.body;
+  const { startTime, endTime, name, location } = req.body;
   const event = new Event({
     startTime,
     endTime,
     name,
     location,
-    allDay,
+    allDay: false,
     user: req.user._id,
   });
 
@@ -83,9 +83,11 @@ const createEvent = (req, res) => {
 const createAllDayEvent = (req, res) => {
   const { name, location } = req.body;
 
+  console.log("All Day ", name, location);
+
   const event = new Event({
-    startTime: "null",
-    endTime: "null",
+    startTime: Date.now(),
+    endTime: Date.now(),
     name,
     location,
     allDay: true,

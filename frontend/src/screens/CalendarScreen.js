@@ -5,6 +5,7 @@ import { amHours, pmHours } from "../utils/Hours.js";
 import { listEvents, listAllDayEvents } from "../actions/eventActions";
 import Loader from "../components/Loader";
 import AllDayEvents from "../components/alldayevents/AllDayEvents";
+import moment from "moment";
 
 const CalendarScreen = () => {
   const dispatch = useDispatch();
@@ -23,7 +24,32 @@ const CalendarScreen = () => {
     dispatch(listEvents());
     dispatch(listAllDayEvents());
   }, [dispatch]);
-  console.log('Testing');
+
+  const userInput = "09:30";
+  const hours = userInput.slice(0, 2);
+  const minutes = userInput.slice(3);
+
+  const startDate = new Date();
+  startDate.setHours(hours, minutes);
+
+  const endDate = new Date();
+  endDate.setHours("11", "00");
+
+  // endDate.setHours(startTime.split(":")[0], startTime.split(":")[1]);
+
+  // console.log("Start Date, ", moment(startDate).format("LT"),moment(endDate).format('LT'));
+  // console.log("Difference , ", endDate.getTime()-startDate.getTime());
+  // console.log("End Date, ", endDate);
+
+  // if (events) {
+  //   console.log("Start ==> ", moment(events[6].startTime).format("LT"));
+  //   console.log("End ==> ", moment(events[6].endTime).format("LT"));
+  //   // console.log("End ==> ", moment(events[6].endTime).format("LT"));
+
+  //   console.log("Difference ==> ",  (new Date(events[10].endTime) - new Date(events[10].startTime))/3600000); 
+  //   console.log("Time Test ==> ",  (new Date(events[6].endTime).getHours())); 
+    
+  // }
 
   return (
     <>

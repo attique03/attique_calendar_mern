@@ -28,6 +28,8 @@ const EventsModal = (props) => {
     success: successDelete,
   } = eventDelete;
 
+  console.log("Start Time Modal ", props.event?.startTime);
+
   useEffect(() => {
     if (success || successDelete) {
       dispatch({ type: EVENT_UPDATE_RESET });

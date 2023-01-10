@@ -55,8 +55,8 @@ export const createEvent =
       dispatch({
         type: EVENT_CREATE_FAIL,
         payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
+          error.response && error.response.data
+            ? error.response.data.error
             : error.message,
       });
     }
@@ -94,8 +94,8 @@ export const createAllDayEvent =
       dispatch({
         type: EVENT_ALLDAY_CREATE_FAIL,
         payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
+          error.response && error.response.data
+            ? error.response.data.error
             : error.message,
       });
     }

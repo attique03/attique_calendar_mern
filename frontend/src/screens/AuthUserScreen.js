@@ -5,13 +5,11 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import EventsModal from "../components/modal/EventsModal";
 
 const AuthUserScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isRegistered, setIsRegistered] = useState(true);
-  const [modalShow, setModalShow] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -45,11 +43,6 @@ const AuthUserScreen = () => {
       <div className="align-form">
         <div className="wrapper fadeInDown">
           <div id="formContent">
-            <Button variant="primary" onClick={() => setModalShow(true)}>
-              Launch vertically centered modal
-            </Button>
-
-            <EventsModal show={modalShow} onHide={() => setModalShow(false)} />
             <div className="fadeIn first" style={{ marginTop: "2rem" }}>
               <h2>{isRegistered ? "Login" : "Register"}</h2>
             </div>

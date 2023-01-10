@@ -7,37 +7,18 @@ const userRoutes = require("./routes/userRoutes");
 const eventRoutes = require("./routes/eventRoutes");
 const { checkUser } = require("./middleware/authMiddleware");
 const dotenv = require("dotenv");
-const connectDB = require("./config/db.js");
+const connectMongoDB = require("./config/connectDatabase.js");
 
 dotenv.config();
-connectDB();
+connectMongoDB();
 
 // express app
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-app.listen(process.env.PORT, console.log(`Server running on port ${process.env.PORT}`.yellow.bold));
-
-// // register view engine
-// app.set("view engine", "ejs");
-
-// // Render HTML Pages
-// app.get("/createEvent", (req, res) => {
-//   res.sendFile(path.join(__dirname, "./views/createEvent.html"));
-// });
-
-// app.get("/events", (req, res) => {
-//   res.sendFile(path.join(__dirname, "./views/events.html"));
-// });
-
-// app.get("/event/:id", (req, res) => {
-//   res.sendFile(path.join(__dirname, "./views/eventDetails.html"));
-// });
-
-// app.get("/createAllDayEvent", (req, res) => {
-//   res.sendFile(path.join(__dirname, "./views/createAllDayEvent.html"));
-// });
+app.use("/api/events", eventRoutes);
+app.use("/api/users",userRoutes);
 
 // middleware & static files
 app.use(express.static(path.join(__dirname, "public")));
@@ -48,21 +29,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("*", checkUser);
+app.listen(process.env.PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${process.env.PORT}`.yellow.bold));
 
-// // routes
-// app.get("/", (req, res) => {
-//   res.render("index");
-//   // res.redirect("/blogs");
-// });
 
-// Event routes
-app.use("/api/events", eventRoutes);
-
-// User routes
-app.use("/api/users",userRoutes);
-
-// // 404 page
-// app.use((req, res) => {
-//   res.status(404).render("404", { title: "404" });
-// });

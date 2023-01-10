@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import EventsModal from "./modal/EventsModal.js";
-import convertToActualTime from "../utils/ConvertTime.js";
+import moment from "moment";
 
 const EventContent = ({ event, contentHeight, contentMargin }) => {
   const [modalShow, setModalShow] = useState(false);
   const [eventData, setEventData] = useState(null);
   const eventRef = useRef();
+
+  console.log("EventContent ", event);
 
   useEffect(() => {
     // if (event.startTime % 2 === 0) {
@@ -36,7 +38,7 @@ const EventContent = ({ event, contentHeight, contentMargin }) => {
           setEventData(event);
         }}
       >
-        <span className="all-day">{convertToActualTime(event.startTime)}</span>
+        <span className="all-day">{moment(event.startTime).format("LT")}</span>
         <b className="sample-item">{event.name}</b>
         <span className="sample-location" style={{ marginLeft: "0px" }}>
           {event.location}

@@ -13,7 +13,7 @@ const AllDayEvents = ({ event }) => {
       />
       <div
         className="all-day-event-data"
-        id={event._id}
+        id={event?._id}
         onClick={() => {
           setModalShow(true);
           setEventData(event);
