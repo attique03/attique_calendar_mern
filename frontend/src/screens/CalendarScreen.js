@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import EventHours from "../components/EventHours";
+import EventHours from "../components/eventHours/EventHours";
 import { amHours, pmHours } from "../utils/Hours.js";
-import { listEvents, listAllDayEvents } from "../actions/eventActions";
-import Loader from "../components/Loader";
+import Loader from "../components/loader/Loader";
 import AllDayEvents from "../components/alldayevents/AllDayEvents";
-import moment from "moment";
+import { listAllDayEvents, listEvents } from "../redux/actions/eventActions";
 
 const CalendarScreen = () => {
   const dispatch = useDispatch();
@@ -20,36 +19,16 @@ const CalendarScreen = () => {
     eventsAllDay,
   } = eventAllDayList;
 
+  const eventUpdate = useSelector((state) => state.eventUpdate);
+  const { success: successUpdate } = eventUpdate;
+
+  const eventDelete = useSelector((state) => state.eventDelete);
+  const { success: successDelete } = eventDelete;
+
   useEffect(() => {
     dispatch(listEvents());
     dispatch(listAllDayEvents());
-  }, [dispatch]);
-
-  const userInput = "09:30";
-  const hours = userInput.slice(0, 2);
-  const minutes = userInput.slice(3);
-
-  const startDate = new Date();
-  startDate.setHours(hours, minutes);
-
-  const endDate = new Date();
-  endDate.setHours("11", "00");
-
-  // endDate.setHours(startTime.split(":")[0], startTime.split(":")[1]);
-
-  // console.log("Start Date, ", moment(startDate).format("LT"),moment(endDate).format('LT'));
-  // console.log("Difference , ", endDate.getTime()-startDate.getTime());
-  // console.log("End Date, ", endDate);
-
-  // if (events) {
-  //   console.log("Start ==> ", moment(events[6].startTime).format("LT"));
-  //   console.log("End ==> ", moment(events[6].endTime).format("LT"));
-  //   // console.log("End ==> ", moment(events[6].endTime).format("LT"));
-
-  //   console.log("Difference ==> ",  (new Date(events[10].endTime) - new Date(events[10].startTime))/3600000); 
-  //   console.log("Time Test ==> ",  (new Date(events[6].endTime).getHours())); 
-    
-  // }
+  }, [dispatch, successUpdate, successDelete]);
 
   return (
     <>
@@ -57,7 +36,7 @@ const CalendarScreen = () => {
         <Loader />
       ) : (
         <div className="container">
-          <div className="events-header">Monday, January 9</div>
+          <div className="events-header">Wednesday, January 11</div>
           <div className="all-day-section">
             {eventsAllDay?.map((event, index) => (
               <AllDayEvents event={event} key={index} />

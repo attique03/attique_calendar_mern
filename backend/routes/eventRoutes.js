@@ -9,16 +9,16 @@ const {
   getAllDayEvents,
 } = require("../controllers/eventController");
 
-const { checkUser } = require("../middleware/authMiddleware");
+const { authUser } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-router.post("/createAllDay", checkUser, createAllDayEvent);
-router.get("/allevents", checkUser, getAllEvents);
-router.get("/allDayEvents", checkUser, getAllDayEvents);
-router.delete("/delete/:id", checkUser, deleteEvent);
-router.put("/update/:id", checkUser, updateEvent);
-router.get("/getEvent/:id", checkUser, getEventById);
-router.post("/", checkUser, createEvent);
+router.post("/createAllDay", authUser, createAllDayEvent);
+router.get("/allevents", authUser, getAllEvents);
+router.get("/allDayEvents", authUser, getAllDayEvents);
+router.delete("/delete/:id", authUser, deleteEvent);
+router.put("/update/:id", authUser, updateEvent);
+router.get("/getEvent/:id", authUser, getEventById);
+router.post("/", authUser, createEvent);
 
 module.exports = router;

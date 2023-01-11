@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/actions/userActions";
 import "./sidebar.scss";
-// import { userType } from "../../constants/userType";
-import { logout } from "../../actions/userActions";
 
 const sidebarNavItems = [
   {
@@ -20,14 +19,6 @@ const sidebarNavItems = [
   },
 ];
 
-const userType = {
-  ADMIN: "Admin",
-  EMPLOYEE: "Employee",
-  MANAGER: "Manager",
-};
-
-const userInfo = "Admin";
-
 const Sidebar = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [stepHeight, setStepHeight] = useState(0);
@@ -37,9 +28,6 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-
-  // const userLogin = useSelector((state) => state.userLogin);
-  // const { userInfo } = userLogin;
 
   useEffect(() => {
     setTimeout(() => {
@@ -56,7 +44,7 @@ const Sidebar = () => {
       (item) => item.section === curPath
     );
     setActiveIndex(curPath.length === 0 ? 0 : activeItem);
-  }, [location]);
+  }, [location, dispatch]);
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -65,10 +53,7 @@ const Sidebar = () => {
 
   return (
     <div className="sidebar">
-      <div className="sidebar__logo">
-        {userInfo && userInfo.firstName}{" "}
-        <div className="sidebar__type"> {userInfo.type}</div>
-      </div>
+      <div className="sidebar__logo"></div>
       <div ref={sidebarRef} className="sidebar__menu">
         <div
           ref={indicatorRef}

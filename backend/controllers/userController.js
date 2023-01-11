@@ -1,42 +1,43 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const handleUserErrors = require("../utils/errorHandler");
-const { createToken, maxAge } = require("../utils/generateToken");
+const { generateToken, maxAge } = require("../utils/generateToken");
 
+// @desc    Register a new User
+// @route   POST /api/users/signup
+// access   Public
 const registerUser = async (req, res) => {
   const { email, password } = req.body;
 
-  console.log("Inside Register ", email, password);
-
   try {
     const user = await User.create({ email, password });
-    const token = createToken(user._id);
-    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res.status(201).json({ user, token });
+    res.status(201).json({
+      _id: user._id,
+      email: user.email,
+      token: generateToken(user._id),
+    });
   } catch (err) {
     const errors = handleUserErrors(err);
-    console.log("Errors ===> ", errors);
     res.status(400).json({ errors });
   }
 };
 
+// @desc    Auth User & Get Token
+// @route   POST /api/users/login
+// access   Public
 const authUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
     const user = await User.findOne({ email });
-    if (user) {
-      const auth = await bcrypt.compare(password, user.password);
-      if (auth) {
-        console.log("Auth: ", auth);
-        const token = createToken(user._id);
-        res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-        res.status(200).json({ user, token });
-      } else {
-        throw Error("incorrect password");
-      }
+    if (user && (await bcrypt.compare(password, user.password))) {
+      res.json({
+        _id: user._id,
+        email: user.email,
+        token: generateToken(user._id),
+      });
     } else {
-      throw Error("incorrect email");
+      throw Error("Invalid Email or Password");
     }
   } catch (err) {
     const errors = handleUserErrors(err);
@@ -44,15 +45,8 @@ const authUser = async (req, res) => {
   }
 };
 
-const logout = (req, res) => {
-  // console.log('Inside Logout ', res.cookie("jwt", "", { maxAge: 1 }));
-  // res.cookie("jwt", "", { maxAge: 1 });
-  res.cookie("jwt", "", { httpOnly: true, maxAge: 1 });
-  res.status(200).json("Success");
-};
 
 module.exports = {
   registerUser,
   authUser,
-  logout,
 };

@@ -1,21 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
-import EventsModal from "./modal/EventsModal.js";
+import React, { useState, useRef } from "react";
+import EventsModal from "../modal/EventsModal.js";
 import moment from "moment";
 
 const EventContent = ({ event, contentHeight, contentMargin }) => {
   const [modalShow, setModalShow] = useState(false);
   const [eventData, setEventData] = useState(null);
   const eventRef = useRef();
-
-  console.log("EventContent ", event);
-
-  useEffect(() => {
-    // if (event.startTime % 2 === 0) {
-    //   eventRef.current.style.marginTop = "30.5px";
-    // }
-
-    // console.log("Event Data ", eventData);
-  }, []);
 
   return (
     <>

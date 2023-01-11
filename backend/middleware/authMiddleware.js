@@ -1,45 +1,33 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 
-const requireAuth = (req, res, next) => {
-  const token = req.cookies.jwt;
+const authUser = async (req, res, next) => {
+  let token;
 
-  // check json web token exists & is verified
-  if (token) {
-    jwt.verify(token, 'abc123', (err, decodedToken) => {
-      if (err) {
-        console.log(err.message);
-        res.redirect('/login');
-      } else {
-        console.log(decodedToken);
-        next();
-      }
-    });
-  } else {
-    res.redirect('/login');
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    try {
+      token = req.headers.authorization.split(" ")[1];
+
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+      //fetching User
+      req.user = await User.findById(decoded.id).select("-password");
+
+      next();
+    } catch (error) {
+      console.error(error);
+      res.status(401);
+      throw new Error("Not Authorized, Token Failed");
+    }
   }
-};
 
-// check current user
-const checkUser = (req, res, next) => {
-  const token = req.cookies.jwt;
-  if (token) {
-    jwt.verify(token, 'abc123', async (err, decodedToken) => {
-      if (err) {
-        res.locals.user = null;
-        next();
-      } else {
-        let user = await User.findById(decodedToken.id);
-        res.locals.user = user;
-        req.user = user;
-        next();
-      }
-    });
-  } else {
-    res.locals.user = null;
-    next();
+  if (!token) {
+    res.status(401);
+    throw new Error("Not Authorized, No token");
   }
-};
+}
 
-
-module.exports = { requireAuth, checkUser };
+module.exports = { authUser };

@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login, register } from "../actions/userActions";
-import Message from "../components/Message";
-import Loader from "../components/Loader";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import Loader from "../components/loader/Loader";
+import { Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { login, register } from "../redux/actions/userActions";
 
 const AuthUserScreen = () => {
   const [email, setEmail] = useState("");

@@ -55,7 +55,7 @@ export const eventAllDayCreateReducer = (state = {}, action) => {
   }
 };
 
-export const eventListReducer = (state = { users: [] }, action) => {
+export const eventListReducer = (state = { events: [] }, action) => {
   switch (action.type) {
     case EVENT_LIST_REQUEST:
       return { loading: true };
@@ -68,7 +68,7 @@ export const eventListReducer = (state = { users: [] }, action) => {
   }
 };
 
-export const eventAllDayListReducer = (state = { users: [] }, action) => {
+export const eventAllDayListReducer = (state = { eventsAllDay: [] }, action) => {
   switch (action.type) {
     case EVENT_ALLDAY_LIST_REQUEST:
       return { loading: true };
@@ -81,7 +81,7 @@ export const eventAllDayListReducer = (state = { users: [] }, action) => {
   }
 };
 
-export const eventDetailsReducer = (state = { user: {} }, action) => {
+export const eventDetailsReducer = (state = { event: {} }, action) => {
   switch (action.type) {
     case EVENT_DETAILS_REQUEST:
       return { ...state, loading: true };

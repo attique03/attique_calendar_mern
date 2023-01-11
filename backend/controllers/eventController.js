@@ -1,6 +1,9 @@
 const Event = require("../models/eventModel");
 const path = require("path");
 
+// @desc    Fetch Timed Events
+// @route   GET /api/events/allevents
+// access   Private
 const getAllEvents = (req, res) => {
   Event.find({ user: req.user._id })
     .then((result) => {
@@ -12,6 +15,9 @@ const getAllEvents = (req, res) => {
     });
 };
 
+// @desc    Fetch AllDay Events
+// @route   GET /api/events/allDayEvents
+// access   Private
 const getAllDayEvents = (req, res) => {
   Event.find({ user: req.user._id })
     .then((result) => {
@@ -23,6 +29,9 @@ const getAllDayEvents = (req, res) => {
     });
 };
 
+// @desc    Fetch Single Event
+// @route   GET /api/events/getEvent/:id
+// access   Private
 const getEventById = (req, res) => {
   const id = req.params.id;
   Event.findById({ _id: id })
@@ -35,6 +44,9 @@ const getEventById = (req, res) => {
     });
 };
 
+// @desc    Update Event
+// @route   PUT /api/events/update/:id
+// access   Private
 const updateEvent = (req, res) => {
   const id = req.params.id;
   const { startTime, endTime, name, location } = req.body;
@@ -48,6 +60,9 @@ const updateEvent = (req, res) => {
     });
 };
 
+// @desc    Delete Event
+// @route   DELETE /api/events/delete/:id
+// access   Private
 const deleteEvent = (req, res) => {
   const id = req.params.id;
   Event.findByIdAndDelete(id)
@@ -59,6 +74,9 @@ const deleteEvent = (req, res) => {
     });
 };
 
+// @desc    Create Timed Event
+// @route   POST /api/events
+// access   Private
 const createEvent = (req, res) => {
   const { startTime, endTime, name, location } = req.body;
   const event = new Event({
@@ -80,6 +98,9 @@ const createEvent = (req, res) => {
     });
 };
 
+// @desc    Create AllDay Event
+// @route   POST /api/events/createAllDay
+// access   Private
 const createAllDayEvent = (req, res) => {
   const { name, location } = req.body;
 

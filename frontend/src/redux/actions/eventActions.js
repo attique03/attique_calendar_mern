@@ -23,6 +23,7 @@ import {
   EVENT_UPDATE_SUCCESS,
 } from "../constants/eventConstants";
 
+// Create Timed Event
 export const createEvent =
   ({ startTime, endTime, name, location, allDay }) =>
   async (dispatch, getState) => {
@@ -36,8 +37,9 @@ export const createEvent =
       } = getState();
 
       const config = {
-        cookies: {
-          jwt: `${userInfo}`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo}`,
         },
       };
 
@@ -62,6 +64,7 @@ export const createEvent =
     }
   };
 
+// Create All Day Event
 export const createAllDayEvent =
   ({ name, location }) =>
   async (dispatch, getState) => {
@@ -75,8 +78,9 @@ export const createAllDayEvent =
       } = getState();
 
       const config = {
-        cookies: {
-          jwt: `${userInfo}`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo}`,
         },
       };
 
@@ -101,6 +105,7 @@ export const createAllDayEvent =
     }
   };
 
+// Fetch Tmed Events
 export const listEvents = () => async (dispatch, getState) => {
   try {
     dispatch({
@@ -112,8 +117,9 @@ export const listEvents = () => async (dispatch, getState) => {
     } = getState();
 
     const config = {
-      cookies: {
-        jwt: `${userInfo}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo}`,
       },
     };
 
@@ -145,8 +151,9 @@ export const listAllDayEvents = () => async (dispatch, getState) => {
     } = getState();
 
     const config = {
-      cookies: {
-        jwt: `${userInfo}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo}`,
       },
     };
 
@@ -167,7 +174,6 @@ export const listAllDayEvents = () => async (dispatch, getState) => {
   }
 };
 
-// Delete User
 export const deleteEvent = (id) => async (dispatch, getState) => {
   try {
     dispatch({
@@ -179,8 +185,9 @@ export const deleteEvent = (id) => async (dispatch, getState) => {
     } = getState();
 
     const config = {
-      cookies: {
-        jwt: `${userInfo}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo}`,
       },
     };
 
@@ -201,8 +208,6 @@ export const deleteEvent = (id) => async (dispatch, getState) => {
 };
 
 export const updateEvent = (id, event) => async (dispatch, getState) => {
-  console.log("Id ", id);
-  console.log("Event ", event);
   try {
     dispatch({
       type: EVENT_UPDATE_REQUEST,
@@ -213,8 +218,9 @@ export const updateEvent = (id, event) => async (dispatch, getState) => {
     } = getState();
 
     const config = {
-      cookies: {
-        jwt: `${userInfo}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo}`,
       },
     };
 
@@ -246,8 +252,9 @@ export const getEventDetails = (id) => async (dispatch, getState) => {
     } = getState();
 
     const config = {
-      cookies: {
-        jwt: `${userInfo}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo}`,
       },
     };
 

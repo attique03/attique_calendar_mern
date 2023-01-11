@@ -1,117 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createAllDayEvent, createEvent } from "../actions/eventActions";
 import { useNavigate } from "react-router-dom";
+import { Form, Button, Row, Col } from "react-bootstrap";
+import Loader from "../components/loader/Loader";
+import FormContainer from "../components/formContainer/FormContainer";
 import {
   EVENT_ALLDAY_CREATE_RESET,
   EVENT_CREATE_RESET,
-} from "../constants/eventConstants";
-import { Form, Button, Row, Col } from "react-bootstrap";
-import Loader from "../components/Loader";
-import Message from "../components/Message";
-import FormContainer from "../components/FormContainer";
-
-const data = [
-  {
-    value: "09:00",
-    content: "9:00AM",
-  },
-  {
-    value: "09:30",
-    content: "9:30AM",
-  },
-  {
-    value: "10:00",
-    content: "10:00AM",
-  },
-  {
-    value: "10:30",
-    content: "10:30AM",
-  },
-  {
-    value: "11:00",
-    content: "11:00AM",
-  },
-  {
-    value: "11:30",
-    content: "11:30AM",
-  },
-  {
-    value: "12:00",
-    content: "12:00PM",
-  },
-  {
-    value: "12:30",
-    content: "12:30PM",
-  },
-  {
-    value: "13:00",
-    content: "1:00PM",
-  },
-  {
-    value: "13:30",
-    content: "1:30PM",
-  },
-  {
-    value: "14:00",
-    content: "2:00PM",
-  },
-  {
-    value: "14:30",
-    content: "2:30PM",
-  },
-  {
-    value: "15:00",
-    content: "3:00PM",
-  },
-  {
-    value: "15:30",
-    content: "3:30PM",
-  },
-  {
-    value: "16:00",
-    content: "4:00PM",
-  },
-  {
-    value: "16:30",
-    content: "4:30PM",
-  },
-  {
-    value: "17:00",
-    content: "5:00PM",
-  },
-  {
-    value: "17:30",
-    content: "5:30PM",
-  },
-  {
-    value: "18:00",
-    content: "6:00PM",
-  },
-  {
-    value: "18:30",
-    content: "6:30PM",
-  },
-  {
-    value: "19:00",
-    content: "7:00PM",
-  },
-  {
-    value: "19:30",
-    content: "7:30PM",
-  },
-  {
-    value: "20:00",
-    content: "8:00PM",
-  },
-  {
-    value: "20:30",
-    content: "8:30PM",
-  },
-];
+} from "../redux/constants/eventConstants";
+import { createAllDayEvent, createEvent } from "../redux/actions/eventActions";
+import data from "../utils/CreateEventData";
 
 const EventCreateScreen = () => {
-  const [startTime, setStartTime] = useState("0");
+  const [startTime, setStartTime] = useState();
   const [endTime, setEndTime] = useState("0");
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
@@ -160,12 +61,6 @@ const EventCreateScreen = () => {
     }
   };
 
-  // console.log("Start Time ", startTime.split(":")[0]);
-  // if (error) {
-  //   console.log("Error ", error);
-  // }
-
- 
   return (
     <FormContainer>
       <h1 className="mb-4">Create Event</h1>
@@ -206,11 +101,10 @@ const EventCreateScreen = () => {
                     // }
                   }}
                   required
-                  // defaultValue="1"
                 >
                   <option value="">Please Select Start Time</option>
                   {data.map((startTime, index) => (
-                    <option value={startTime.value} key={index}>
+                    <option value={startTime.value} key={index} id={endTime.id}>
                       {startTime.content}
                     </option>
                   ))}
@@ -231,7 +125,7 @@ const EventCreateScreen = () => {
                     <option
                       value={endTime.value}
                       // disabled={
-                      //   Number(startTime) >= Number(endTime.id) ? true : false
+                      //   Number(startTime.id) >= Number(endTime.id) ? true : false
                       // }
                       key={index}
                     >
