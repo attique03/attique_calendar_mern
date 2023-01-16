@@ -1,7 +1,7 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const handleUserErrors = require("../utils/errorHandler");
-const { generateToken, maxAge } = require("../utils/generateToken");
+const generateToken = require("../utils/generateToken");
 
 // @desc    Register a new User
 // @route   POST /api/users/signup

@@ -1,7 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
 const colors = require("colors");
-const cookieParser = require("cookie-parser");
 const path = require("path");
 const userRoutes = require("./routes/userRoutes");
 const eventRoutes = require("./routes/eventRoutes");
@@ -15,7 +14,6 @@ connectMongoDB();
 // express app
 const app = express();
 app.use(express.json());
-app.use(cookieParser());
 
 app.use("/api/events", eventRoutes);
 app.use("/api/users",userRoutes);

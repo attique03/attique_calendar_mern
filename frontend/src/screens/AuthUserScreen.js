@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Loader from "../components/loader/Loader";
 import { Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -9,6 +10,7 @@ const AuthUserScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isRegistered, setIsRegistered] = useState(true);
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -21,6 +23,12 @@ const AuthUserScreen = () => {
     error: errorRegister,
     userInfo: userInfoRegister,
   } = userRegister;
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/");
+    }
+  }, [userInfo, navigate]);
 
   const submitHandler = (e) => {
     e.preventDefault();

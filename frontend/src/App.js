@@ -7,28 +7,37 @@ import CalendarScreen from "./screens/CalendarScreen";
 import EventCreateScreen from "./screens/EventCreateScreen";
 import AppLayout from "./components/layout/AppLayout";
 import AuthUserScreen from "./screens/AuthUserScreen";
+import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
 
 function App() {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  useEffect(() => {}, [userInfo]);
-  console.log("asdkfnsdlk ", userInfo);
-
   return (
     <Router>
+      {userInfo && <AppLayout />}
+
       <Routes>
-        {userInfo ? (
-          <Route path="/" element={<AppLayout />}>
-            <Route path="/" element={<CalendarScreen />} />
-            <Route path="/login" element={<LoginScreen />} />
-            <Route path="/register" element={<RegisterScreen />} />
-            <Route path="/calendar" element={<CalendarScreen />} />
-            <Route path="/createEvent" element={<EventCreateScreen />} />
-          </Route>
-        ) : (
-          <Route path="/" element={<AuthUserScreen exact />} />
-        )}
+        <Route
+          path="/"
+          exact
+          element={
+            <ProtectedRoute>
+              <CalendarScreen />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/createEvent"
+          exact
+          element={
+            <ProtectedRoute>
+              <EventCreateScreen />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/login" element={<LoginScreen />} />
+        <Route path="/register" element={<RegisterScreen />} />
       </Routes>
     </Router>
   );

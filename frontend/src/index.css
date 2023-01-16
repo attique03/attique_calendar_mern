@@ -1,10 +1,15 @@
+.container {
+  max-width: 1000px !important;
+  margin: 0px 300px !important;
+}
+
 .events-header {
   display: flex;
   justify-content: flex-end;
   text-transform: uppercase;
   padding: 30px;
   border-bottom: 1px solid gray;
-  background-color: #FFFEF9;
+  background-color: #fffef9;
   opacity: 0.9;
 }
 
@@ -17,7 +22,7 @@
 
 .all-day-event-data {
   padding: 10px 0px 10px 10px;
-  background-color: #FFFFF4;
+  background-color: #fffff4;
   opacity: 0.9;
   font-size: 14px;
   margin: 1px 0;
