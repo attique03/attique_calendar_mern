@@ -33,8 +33,6 @@ const CalendarScreen = () => {
     dispatch(listAllDayEvents());
   }, [dispatch, successUpdate, successDelete, userInfo?.token]);
 
-  console.log("User ", userInfo)
-
   return (
     <>
       {loading || loadingAllDay ? (

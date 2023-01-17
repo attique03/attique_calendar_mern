@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/userModel');
+const jwt = require("jsonwebtoken");
+const User = require("../models/userModel");
 
 const authUser = async (req, res, next) => {
   let token;
@@ -28,6 +28,6 @@ const authUser = async (req, res, next) => {
     res.status(401);
     throw new Error("Not Authorized, No token");
   }
-}
+};
 
 module.exports = { authUser };

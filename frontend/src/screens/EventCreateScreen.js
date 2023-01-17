@@ -86,13 +86,13 @@ const EventCreateScreen = () => {
     }
   };
 
-  console.log(
-    "Locaiton ",
-    startTime,
-    endTime,
-    Number(startTime?.split(":")[0]) >= Number(endTime?.split(":")[0]),
-    startTime >= endTime
-  );
+  // console.log(
+  //   "Locaiton ",
+  //   startTime,
+  //   endTime,
+  //   Number(startTime?.split(":")[0]) >= Number(endTime?.split(":")[0]),
+  //   startTime >= endTime
+  // );
 
   return (
     <FormContainer>

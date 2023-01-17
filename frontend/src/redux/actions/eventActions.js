@@ -39,7 +39,7 @@ export const createEvent =
       const config = {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${userInfo}`,
+          Authorization: `Bearer ${userInfo.token}`,
         },
       };
 
@@ -80,7 +80,7 @@ export const createAllDayEvent =
       const config = {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${userInfo}`,
+          Authorization: `Bearer ${userInfo.token}`,
         },
       };
 
@@ -119,7 +119,7 @@ export const listEvents = () => async (dispatch, getState) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo}`,
+        Authorization: `Bearer ${userInfo?.token}`,
       },
     };
 
@@ -153,7 +153,7 @@ export const listAllDayEvents = () => async (dispatch, getState) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo}`,
+        Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
@@ -187,7 +187,7 @@ export const deleteEvent = (id) => async (dispatch, getState) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo}`,
+        Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
@@ -220,7 +220,7 @@ export const updateEvent = (id, event) => async (dispatch, getState) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo}`,
+        Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
@@ -254,7 +254,7 @@ export const getEventDetails = (id) => async (dispatch, getState) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo}`,
+        Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
