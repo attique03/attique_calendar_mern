@@ -9,6 +9,9 @@ import { listAllDayEvents, listEvents } from "../redux/actions/eventActions";
 const CalendarScreen = () => {
   const dispatch = useDispatch();
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   const eventList = useSelector((state) => state.eventList);
   const { loading, error, events } = eventList;
 
@@ -28,14 +31,16 @@ const CalendarScreen = () => {
   useEffect(() => {
     dispatch(listEvents());
     dispatch(listAllDayEvents());
-  }, [dispatch, successUpdate, successDelete]);
+  }, [dispatch, successUpdate, successDelete, userInfo?.token]);
+
+  console.log("User ", userInfo)
 
   return (
     <>
       {loading || loadingAllDay ? (
         <Loader />
       ) : (
-        <div className="container">
+        <div className="container-modified">
           <div className="events-header">Wednesday, January 11</div>
           <div className="all-day-section">
             {eventsAllDay?.map((event, index) => (

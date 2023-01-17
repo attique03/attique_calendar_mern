@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import EventContent from "../eventContent/EventContent.js";
 import convertToActualTime from "../../utils/ConvertTime.js";
+import fixOverLap from "../../utils/FixOverlap.js";
 
 const EventHours = ({ time, events }) => {
+  
+  useEffect(() => {
+    if (events) {
+      fixOverLap();
+    }
+  }, [events]);
+
   return (
     <div className="am-content">
       <span className="full">{time.full}</span>
@@ -19,19 +27,20 @@ const EventHours = ({ time, events }) => {
                 <EventContent
                   event={event}
                   contentHeight={
-                    new Date(event.startTime).getHours() % 2 === 0
+                    new Date(event.endTime).getHours() % 2 === 0 &&
+                    new Date(event.endTime).getMinutes() !== 0
                       ? ((new Date(event.endTime) - new Date(event.startTime)) /
                           3600000) *
-                        75
+                        70
                       : ((new Date(event.endTime) - new Date(event.startTime)) /
                           3600000) *
-                        74.5
+                        72.5
                   }
                   contentMargin={
                     new Date(event.startTime).getMinutes() !== 0 &&
-                    new Date(event.startTime).getMinutes() % 2 === 0 && 30.5
+                    new Date(event.startTime).getMinutes() % 2 === 0 &&
+                    30.5
                   }
-                  // style={{marginTop: "15.5px"}}
                   key={index}
                 />
               )

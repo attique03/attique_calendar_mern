@@ -14,6 +14,7 @@ const EventsModal = (props) => {
   const [endTime, setEndTime] = useState("");
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
+  const [cities, setCities] = useState([]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -29,24 +30,51 @@ const EventsModal = (props) => {
     success: successDelete,
   } = eventDelete;
 
+  const getLocations = async () => {
+    const where = encodeURIComponent(
+      JSON.stringify({
+        name: {
+          $exists: true,
+        },
+      })
+    );
+    const response = await fetch(
+      `https://parseapi.back4app.com/classes/City?limit=1000&order=name&where=${where}`,
+      {
+        headers: {
+          "X-Parse-Application-Id": "q1QfxhDv1KLM5OPzUFzZRIvYERUAFLWEWX9r053J",
+          "X-Parse-Master-Key": "POcTYBgrQ52WGn2lJrcQrYwFFM44uhQ2eqmoy8hS",
+        },
+      }
+    );
+    const data = await response.json();
+    setCities(data);
+  };
+
   useEffect(() => {
     if (success) {
       dispatch({ type: EVENT_UPDATE_RESET });
       navigate("/");
     } else {
       setStartTime(
-        `${new Date(props.event?.startTime).getHours()}:${new Date(
-          props.event?.startTime
-        ).getMinutes()}`
+        `${new Date(props.event?.startTime).getHours()}:${
+          new Date(props.event?.startTime).getMinutes() === 0
+            ? "00"
+            : new Date(props.event?.startTime).getMinutes()
+        }`
       );
       setEndTime(
-        `${new Date(props.event?.endTime).getHours()}:${new Date(
-          props.event?.endTime
-        ).getMinutes()}`
+        `${new Date(props.event?.endTime).getHours()}:${
+          new Date(props.event?.endTime).getMinutes() === 0
+            ? "00"
+            : new Date(props.event?.endTime).getMinutes()
+        }`
       );
       setName(props.event?.name);
       setLocation(props.event?.location);
     }
+
+    getLocations();
   }, [success, dispatch, navigate, props?.event]);
 
   const editEventHandler = (e) => {
@@ -71,13 +99,13 @@ const EventsModal = (props) => {
     e.preventDefault();
     dispatch(deleteEvent(props.event?._id));
   };
-
   return (
     <Modal
       {...props}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      // style={{paddingLeft: "215px !important"}}
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
@@ -140,30 +168,31 @@ const EventsModal = (props) => {
                       value={endTime}
                       onChange={(e) => setEndTime(e.target.value)}
                       required
+                      defaultValue={endTime}
                     >
-                      <option value="2">9:30AM</option>
-                      <option value="3">10:00AM</option>
-                      <option value="4">10:30AM</option>
-                      <option value="5">11:00AM</option>
-                      <option value="6">11:30AM</option>
-                      <option value="7">12:00PM</option>
-                      <option value="8">12:30PM</option>
-                      <option value="9">1:00PM</option>
-                      <option value="10">1:30PM</option>
-                      <option value="11">2:00PM</option>
-                      <option value="12">2:30PM</option>
-                      <option value="13">3:00PM</option>
-                      <option value="14">3:30PM</option>
-                      <option value="15">4:00PM</option>
-                      <option value="16">4:30PM</option>
-                      <option value="17">5:00PM</option>
-                      <option value="18">5:30PM</option>
-                      <option value="19">6:00PM</option>
-                      <option value="20">6:30PM</option>
-                      <option value="21">7:00PM</option>
-                      <option value="22">7:30PM</option>
-                      <option value="23">8:00PM</option>
-                      <option value="24">8:30PM</option>
+                      <option value="09:30">9:30AM</option>
+                      <option value="10:00">10:00AM</option>
+                      <option value="10:30">10:30AM</option>
+                      <option value="11:00">11:00AM</option>
+                      <option value="11:30">11:30AM</option>
+                      <option value="12:00">12:00PM</option>
+                      <option value="12:30">12:30PM</option>
+                      <option value="13:00">1:00PM</option>
+                      <option value="13:30">1:30PM</option>
+                      <option value="14:00">2:00PM</option>
+                      <option value="14:30">2:30PM</option>
+                      <option value="15:00">3:00PM</option>
+                      <option value="15:30">3:30PM</option>
+                      <option value="16:00">4:00PM</option>
+                      <option value="16:30">4:30PM</option>
+                      <option value="17:00">5:00PM</option>
+                      <option value="17:30">5:30PM</option>
+                      <option value="18:00">6:00PM</option>
+                      <option value="18:30">6:30PM</option>
+                      <option value="19:00">7:00PM</option>
+                      <option value="19:30">7:30PM</option>
+                      <option value="20:00">8:00PM</option>
+                      <option value="20:30">8:30PM</option>
                     </Form.Control>
                   </Form.Group>
                 </Col>
@@ -184,12 +213,20 @@ const EventsModal = (props) => {
             <Form.Group controlId="location" className="pt-3">
               <Form.Label>Location</Form.Label>
               <Form.Control
-                type="location"
-                placeholder="Enter Location"
+                as="select"
                 value={location}
-                onChange={(e) => setLocation(e.target.value)}
+                onChange={(e) => {
+                  setLocation(e.target.value);
+                }}
                 required
-              ></Form.Control>
+              >
+                <option value="">Please Select Location</option>
+                {cities?.results?.map((city, index) => (
+                  <option value={city.name} key={index}>
+                    {city.name}
+                  </option>
+                ))}
+              </Form.Control>
             </Form.Group>
 
             <Row>

@@ -10,13 +10,15 @@ import {
 } from "../redux/constants/eventConstants";
 import { createAllDayEvent, createEvent } from "../redux/actions/eventActions";
 import data from "../utils/CreateEventData";
+import convertToActualTime from "../utils/ConvertTime";
 
 const EventCreateScreen = () => {
   const [startTime, setStartTime] = useState();
-  const [endTime, setEndTime] = useState("0");
+  const [endTime, setEndTime] = useState();
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [isAllDay, setIsAllDay] = useState(false);
+  const [cities, setCities] = useState([]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -31,12 +33,35 @@ const EventCreateScreen = () => {
     success: successAllDayCreate,
   } = eventAllDayCreate;
 
+  const getLocations = async () => {
+    const where = encodeURIComponent(
+      JSON.stringify({
+        name: {
+          $exists: true,
+        },
+      })
+    );
+    const response = await fetch(
+      `https://parseapi.back4app.com/classes/City?limit=1000&order=name&where=${where}`,
+      {
+        headers: {
+          "X-Parse-Application-Id": "q1QfxhDv1KLM5OPzUFzZRIvYERUAFLWEWX9r053J",
+          "X-Parse-Master-Key": "POcTYBgrQ52WGn2lJrcQrYwFFM44uhQ2eqmoy8hS",
+        },
+      }
+    );
+    const data = await response.json();
+    setCities(data);
+  };
+
   useEffect(() => {
     if (success || successAllDayCreate) {
       dispatch({ type: EVENT_CREATE_RESET });
       dispatch({ type: EVENT_ALLDAY_CREATE_RESET });
       navigate("/");
     }
+
+    getLocations();
   }, [success, successAllDayCreate, dispatch, navigate]);
 
   const createEventHandler = (e) => {
@@ -60,6 +85,14 @@ const EventCreateScreen = () => {
       dispatch(createAllDayEvent({ name, location }));
     }
   };
+
+  console.log(
+    "Locaiton ",
+    startTime,
+    endTime,
+    Number(startTime?.split(":")[0]) >= Number(endTime?.split(":")[0]),
+    startTime >= endTime
+  );
 
   return (
     <FormContainer>
@@ -104,7 +137,7 @@ const EventCreateScreen = () => {
                 >
                   <option value="">Please Select Start Time</option>
                   {data.map((startTime, index) => (
-                    <option value={startTime.value} key={index} id={endTime.id}>
+                    <option value={startTime.value} key={index}>
                       {startTime.content}
                     </option>
                   ))}
@@ -121,15 +154,19 @@ const EventCreateScreen = () => {
                   required
                 >
                   <option value="">Please Select End Time</option>
-                  {data.map((endTime, index) => (
+                  {data.map((eTime, index) => (
                     <option
-                      value={endTime.value}
-                      // disabled={
-                      //   Number(startTime.id) >= Number(endTime.id) ? true : false
-                      // }
+                      value={eTime.value}
                       key={index}
+                      // disabled={startTime >= endTime ? true : false}
+                      // disabled={
+                      //   Number(startTime?.split(":")[0]) >=
+                      //   Number(eTime.value.split(":")[0])
+                      //     ? true
+                      //     : false
+                      // }
                     >
-                      {endTime.content}
+                      {eTime.content}
                     </option>
                   ))}
                 </Form.Control>
@@ -137,7 +174,6 @@ const EventCreateScreen = () => {
             </Col>
           </Row>
         )}
-
         <Form.Group controlId="endTime" className="pt-3">
           <Form.Label>Name</Form.Label>
           <Form.Control
@@ -154,12 +190,20 @@ const EventCreateScreen = () => {
         <Form.Group controlId="location" className="pt-3">
           <Form.Label>Location</Form.Label>
           <Form.Control
-            type="location"
-            placeholder="Enter Location"
+            as="select"
             value={location}
-            onChange={(e) => setLocation(e.target.value)}
+            onChange={(e) => {
+              setLocation(e.target.value);
+            }}
             required
-          ></Form.Control>
+          >
+            <option value="">Please Select Location</option>
+            {cities?.results?.map((city, index) => (
+              <option value={city.name} key={index}>
+                {city.name}
+              </option>
+            ))}
+          </Form.Control>
         </Form.Group>
 
         <Button type="submit" variant="primary" className="my-5">
