@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./allDayEvents.css"
 import EventsModal from "../modal/EventsModal.js";
 
 const AllDayEvents = ({ event }) => {

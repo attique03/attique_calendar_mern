@@ -1,0 +1,29 @@
+.am-content {
+  flex: 90%;
+  display: flex;
+  border-bottom: 1px solid black;
+}
+
+.am-content > span {
+  flex: 10%;
+}
+
+.am-inner-content {
+  display: flex;
+  flex: 90%;
+  flex-direction: column;
+  position: relative;
+  margin-bottom: 18px;
+}
+
+.half {
+  border-bottom: 1px solid #a9a9a9;
+  padding-top: 30px;
+  padding-right: 700px;
+  padding-left: 90px;
+  height: 50%;
+}
+
+.am-inner-half {
+  color: #a9a9a9;
+}

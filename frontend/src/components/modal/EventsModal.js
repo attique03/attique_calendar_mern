@@ -7,7 +7,13 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../loader/Loader";
 import Message from "../message/Message";
 import { deleteEvent, updateEvent } from "../../redux/actions/eventActions";
-import { EVENT_UPDATE_RESET } from "../../redux/constants/eventConstants";
+import {
+  EVENT_ALLDAY_LIST_RESET,
+  EVENT_LIST_RESET,
+  EVENT_UPDATE_RESET,
+} from "../../redux/constants/eventConstants";
+import AutoComplete from "../autoComplete/AutoComplete";
+import data from "../../utils/CreateEventData";
 
 const EventsModal = (props) => {
   const [startTime, setStartTime] = useState("");
@@ -52,8 +58,11 @@ const EventsModal = (props) => {
   };
 
   useEffect(() => {
-    if (success) {
+    if (success || successDelete) {
       dispatch({ type: EVENT_UPDATE_RESET });
+      dispatch({ type: EVENT_LIST_RESET });
+      dispatch({ type: EVENT_ALLDAY_LIST_RESET });
+
       navigate("/");
     } else {
       setStartTime(
@@ -75,7 +84,7 @@ const EventsModal = (props) => {
     }
 
     getLocations();
-  }, [success, dispatch, navigate, props?.event]);
+  }, [success, successDelete, dispatch, navigate, props?.event]);
 
   const editEventHandler = (e) => {
     e.preventDefault();
@@ -99,6 +108,15 @@ const EventsModal = (props) => {
     e.preventDefault();
     dispatch(deleteEvent(props.event?._id));
   };
+
+  const handleSetLocation = (str) => {
+    setLocation(str);
+  };
+
+  const setValue = (str) => {
+    setLocation(str);
+  };
+
   return (
     <Modal
       {...props}
@@ -133,30 +151,11 @@ const EventsModal = (props) => {
                       required
                       defaultValue={startTime}
                     >
-                      <option value="09:00">9:00AM</option>
-                      <option value="09:30">9:30AM</option>
-                      <option value="10:00">10:00AM</option>
-                      <option value="10:30">10:30AM</option>
-                      <option value="11:00">11:00AM</option>
-                      <option value="11:30">11:30AM</option>
-                      <option value="12:00">12:00PM</option>
-                      <option value="12:30">12:30PM</option>
-                      <option value="13:00">1:00PM</option>
-                      <option value="13:30">1:30PM</option>
-                      <option value="14:00">2:00PM</option>
-                      <option value="14:30">2:30PM</option>
-                      <option value="15:00">3:00PM</option>
-                      <option value="15:30">3:30PM</option>
-                      <option value="16:00">4:00PM</option>
-                      <option value="16:30">4:30PM</option>
-                      <option value="17:00">5:00PM</option>
-                      <option value="17:30">5:30PM</option>
-                      <option value="18:00">6:00PM</option>
-                      <option value="18:30">6:30PM</option>
-                      <option value="19:00">7:00PM</option>
-                      <option value="19:30">7:30PM</option>
-                      <option value="20:00">8:00PM</option>
-                      <option value="20:30">8:30PM</option>
+                      {data.map((startTime, index) => (
+                        <option value={startTime.value} key={index}>
+                          {startTime.content}
+                        </option>
+                      ))}
                     </Form.Control>
                   </Form.Group>
                 </Col>
@@ -170,36 +169,22 @@ const EventsModal = (props) => {
                       required
                       defaultValue={endTime}
                     >
-                      <option value="09:30">9:30AM</option>
-                      <option value="10:00">10:00AM</option>
-                      <option value="10:30">10:30AM</option>
-                      <option value="11:00">11:00AM</option>
-                      <option value="11:30">11:30AM</option>
-                      <option value="12:00">12:00PM</option>
-                      <option value="12:30">12:30PM</option>
-                      <option value="13:00">1:00PM</option>
-                      <option value="13:30">1:30PM</option>
-                      <option value="14:00">2:00PM</option>
-                      <option value="14:30">2:30PM</option>
-                      <option value="15:00">3:00PM</option>
-                      <option value="15:30">3:30PM</option>
-                      <option value="16:00">4:00PM</option>
-                      <option value="16:30">4:30PM</option>
-                      <option value="17:00">5:00PM</option>
-                      <option value="17:30">5:30PM</option>
-                      <option value="18:00">6:00PM</option>
-                      <option value="18:30">6:30PM</option>
-                      <option value="19:00">7:00PM</option>
-                      <option value="19:30">7:30PM</option>
-                      <option value="20:00">8:00PM</option>
-                      <option value="20:30">8:30PM</option>
+                      {data.map((eTime, index) => (
+                        <option
+                          value={eTime.value}
+                          key={index}
+                          // disabled={startTime >= eTime.id ? true : false}
+                        >
+                          {eTime.content}
+                        </option>
+                      ))}
                     </Form.Control>
                   </Form.Group>
                 </Col>
               </Row>
             )}
 
-            <Form.Group controlId="endTime" className="pt-3">
+            <Form.Group controlId="name" className="pt-3">
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="name"
@@ -210,7 +195,7 @@ const EventsModal = (props) => {
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId="location" className="pt-3">
+            {/* <Form.Group controlId="location" className="pt-3">
               <Form.Label>Location</Form.Label>
               <Form.Control
                 as="select"
@@ -227,7 +212,13 @@ const EventsModal = (props) => {
                   </option>
                 ))}
               </Form.Control>
-            </Form.Group>
+            </Form.Group> */}
+
+            <AutoComplete
+              value={location}
+              setValue={setValue}
+              handleSetLocation={handleSetLocation}
+            />
 
             <Row>
               <Col md={9}>

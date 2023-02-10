@@ -41,6 +41,7 @@ const authUser = async (req, res) => {
     }
   } catch (err) {
     const errors = handleUserErrors(err);
+    console.log('Errors  ', err);
     res.status(400).json({ errors });
   }
 };

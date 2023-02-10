@@ -81,7 +81,7 @@ const Sidebar = () => {
         <div
           className="sidebar__menu__item"
           type="submit"
-          style={{ margin: "5rem 0.5rem" }}
+          style={{  minHeight: "100.8vh" }}
           onClick={logoutHandler}
         >
           <div className="sidebar__menu__item__icon">

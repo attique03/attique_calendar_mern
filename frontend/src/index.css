@@ -3,145 +3,9 @@
   margin: 0px 300px !important;
 }
 
-.events-header {
-  display: flex;
-  justify-content: flex-end;
-  text-transform: uppercase;
-  padding: 30px;
-  border-bottom: 1px solid gray;
-  background-color: #fffef9;
-  opacity: 0.9;
-}
-
-/* ____________________ All Day ____________________ */
-.all-day-section {
-  display: flex;
-  flex-direction: column;
-  margin: 2px 0 2px 147px;
-}
-
-.all-day-event-data {
-  padding: 10px 0px 10px 10px;
-  background-color: #fffff4;
-  opacity: 0.9;
-  font-size: 14px;
-  margin: 1px 0;
-  border-left: 8px solid green;
-
-  margin-left: 120px;
-}
-
-.all-day-event-data:hover {
-  cursor: pointer;
-}
-
-.sample-location {
-  color: RGB(68, 212, 59);
-  margin-left: 4px;
-}
-
-.sample-item {
-  color: black;
-}
-
 .event {
-  display: flex;
   position: absolute;
   width: -webkit-fill-available;
-}
-
-.event:hover {
-  cursor: pointer;
-}
-
-.event-data {
-  flex: 99%;
-}
-
-.event-content {
-  display: flex;
-  flex-direction: column;
-  border-left: 8px solid RGB(68, 212, 59);
-  padding: 10px 10px 10px 10px;
-  background-color: #ffffff;
-  opacity: 0.9;
-  font-size: 14px;
-  margin-left: 50px;
-}
-
-.all-day {
-  color: #a9a9a9;
-}
-
-/* _________________ AM _________________ */
-.am {
-  display: flex;
-  padding: 0px 0px 0px 20px;
-  background-color: rgba(255, 226, 231, 0.8);
-  border-top: 1px solid rgb(236, 51, 152);
-}
-
-.am-title {
-  flex: 5%;
-  margin-right: 20px;
-  justify-content: flex-start;
-  color: rgb(236, 51, 152);
-  font-size: 25px;
-  padding-top: 10px;
-}
-
-.am-data {
-  display: flex;
-  flex-direction: column;
-  flex: 95%;
-}
-
-.am-content {
-  flex: 90%;
-  display: flex;
-  border-bottom: 1px solid black;
-}
-
-.am-content > span {
-  flex: 10%;
-}
-
-.am-inner-content {
-  display: flex;
-  flex: 90%;
-  flex-direction: column;
-  position: relative;
-  margin-bottom: 18px;
-}
-
-.am-inner-half {
-  color: #a9a9a9;
-}
-
-.half {
-  border-bottom: 1px solid #a9a9a9;
-  padding-top: 30px;
-  padding-right: 700px;
-  padding-left: 90px;
-  height: 50%;
-}
-
-/* ________________ PM _____________ */
-
-.pm {
-  display: flex;
-  padding: 5px 0px 30px 20px;
-  background-color: #f0f8ff;
-  border-top: 2px solid rgb(119, 191, 245);
-}
-
-.pm-title {
-  flex: 5%;
-  margin-right: 20px;
-  justify-content: flex-start;
-  color: rgb(119, 191, 245);
-  font-size: 25px;
-  padding-top: 10px;
 }
 
 .error {
@@ -151,7 +15,6 @@
   font-weight: bold;
 }
 
-/* ___________________ Design ___________________ */
 a {
   text-decoration: none;
   color: unset;
@@ -180,7 +43,6 @@ a:hover {
 }
 
 /* STRUCTURE */
-
 .wrapper {
   display: flex;
   align-items: center;
@@ -215,7 +77,6 @@ a:hover {
 }
 
 /* TABS */
-
 h2.inactive {
   color: #cccccc;
 }
@@ -226,7 +87,6 @@ h2.active {
 }
 
 /* FORM TYPOGRAPHY*/
-
 input[type="button"],
 input[type="submit"],
 input[type="reset"] {
@@ -298,7 +158,6 @@ input[type="text"]:placeholder {
 }
 
 /* ANIMATIONS */
-
 /* Simple CSS3 Fade-in-down Animation */
 .fadeInDown {
   -webkit-animation-name: fadeInDown;
@@ -398,98 +257,4 @@ input[type="text"]:placeholder {
   -webkit-animation-delay: 1s;
   -moz-animation-delay: 1s;
   animation-delay: 1s;
-}
-
-/* Simple CSS3 Fade-in Animation */
-.underlineHover:after {
-  display: block;
-  left: 0;
-  bottom: -10px;
-  width: 0;
-  height: 2px;
-  background-color: #56baed;
-  content: "";
-  transition: width 0.2s;
-}
-
-.underlineHover:hover {
-  color: #0d0d0d;
-}
-
-.underlineHover:hover:after {
-  width: 100%;
-}
-
-/* OTHERS */
-
-*:focus {
-  outline: none;
-}
-
-#icon {
-  width: 60%;
-}
-
-/* ________ Search ___________ */
-.search {
-  position: relative;
-}
-
-.search button,
-.search span {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.search > * > svg {
-  display: block;
-}
-
-.search span {
-  left: 20px;
-  opacity: .5;
-  margin-top: 1px;
-}
-
-.search button {
-  right: 20px;
-  left: auto;
-  border: none;
-  margin: 0;
-  padding: 0;
-  background: none;
-  cursor: pointer;
-  color: #333;
-}
-
-.search button:hover {
-  color: #f48fb1;
-}
-
-.search input {
-  box-sizing: border-box;
-  display: block;
-  width: 650px;
-  height: 70px;
-  border-radius: 5px;
-  padding: 0 50px 0 45px;
-  font-size: 20px;
-  outline: none;
-  border: 2px solid #f48fb1;
-  background: white;
-}
-
-.address {
-  margin-top: 30px;
-  font-size: 24px;
-}
-
-.address p {
-  margin-bottom: 15px;
-  margin-top: 0;
-}
-
-.address p span {
-  opacity: .8;
 }

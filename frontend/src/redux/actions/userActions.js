@@ -1,37 +1,37 @@
-import axios from "axios";
 import {
   USER_LOGIN_SUCCESS,
   USER_REGISTER_FAIL,
-  USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
-  USER_LOGIN_REQUEST,
   USER_LOGIN_FAIL,
   USER_LOGOUT,
 } from "../constants/userConstants";
+import axiosConfig from "../../utils/axiosConfig";
+import { LOADING_FALSE, LOADING_TRUE } from "../constants/loadingConstants";
+import { loginApi, registerApi } from "../../api/userapis/UserApis";
+import {
+  EVENT_ALLDAY_LIST_RESET,
+  EVENT_LIST_RESET,
+} from "../constants/eventConstants";
+import { errorHandler } from "../../utils/errors";
 
 export const register = (email, password) => async (dispatch) => {
   try {
     dispatch({
-      type: USER_REGISTER_REQUEST,
+      type: LOADING_TRUE,
     });
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    const { data } = await axios.post(
-      "/api/users/signup",
-      { email, password },
-      config
-    );
+    const { data } = await axiosConfig.post(registerApi, {
+      email,
+      password,
+    });
 
     dispatch({
       type: USER_REGISTER_SUCCESS,
       payload: data,
     });
-
+    dispatch({
+      type: LOADING_FALSE,
+    });
     dispatch({
       type: USER_LOGIN_SUCCESS,
       payload: data,
@@ -41,31 +41,25 @@ export const register = (email, password) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_REGISTER_FAIL,
-      payload:
-        error.response && error.response.data
-          ? error.response.data.errors
-          : error.message,
+      payload: errorHandler(error),
     });
   }
+
+  dispatch({
+    type: LOADING_FALSE,
+  });
 };
 
 export const login = (email, password) => async (dispatch) => {
   try {
     dispatch({
-      type: USER_LOGIN_REQUEST,
+      type: LOADING_TRUE,
     });
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    const { data } = await axios.post(
-      "/api/users/login",
-      { email, password },
-      config
-    );
+    const { data } = await axiosConfig.post(loginApi, {
+      email,
+      password,
+    });
 
     dispatch({
       type: USER_LOGIN_SUCCESS,
@@ -74,17 +68,21 @@ export const login = (email, password) => async (dispatch) => {
 
     localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
+    console.log("Innside Catch ", error);
     dispatch({
       type: USER_LOGIN_FAIL,
-      payload:
-        error.response && error.response.data
-          ? error.response.data.errors
-          : error.message,
+      payload: errorHandler(error),
     });
   }
+
+  dispatch({
+    type: LOADING_FALSE,
+  });
 };
 
 export const logout = () => (dispatch) => {
   localStorage.removeItem("userInfo");
   dispatch({ type: USER_LOGOUT });
+  dispatch({ type: EVENT_LIST_RESET });
+  dispatch({ type: EVENT_ALLDAY_LIST_RESET });
 };

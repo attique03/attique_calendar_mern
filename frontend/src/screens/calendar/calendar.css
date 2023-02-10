@@ -1,0 +1,55 @@
+.events-header {
+  display: flex;
+  justify-content: flex-end;
+  text-transform: uppercase;
+  padding: 30px;
+  border-bottom: 1px solid gray;
+  background-color: #fffef9;
+  opacity: 0.9;
+}
+
+.all-day-section {
+  display: flex;
+  flex-direction: column;
+  margin: 2px 0 2px 147px;
+}
+
+/* _________________ AM _________________ */
+.am {
+  display: flex;
+  padding: 0px 0px 0px 20px;
+  background-color: rgba(255, 226, 231, 0.8);
+  border-top: 1px solid rgb(236, 51, 152);
+}
+
+.am-title {
+  flex: 5%;
+  margin-right: 20px;
+  justify-content: flex-start;
+  color: rgb(236, 51, 152);
+  font-size: 25px;
+  padding-top: 10px;
+}
+
+.am-data {
+  display: flex;
+  flex-direction: column;
+  flex: 95%;
+}
+
+/* ________________ PM _____________ */
+.pm {
+  display: flex;
+  padding: 5px 0px 30px 20px;
+  background-color: #f0f8ff;
+  border-top: 2px solid rgb(119, 191, 245);
+}
+
+.pm-title {
+  flex: 5%;
+  margin-right: 20px;
+  justify-content: flex-start;
+  color: rgb(119, 191, 245);
+  font-size: 25px;
+  padding-top: 10px;
+}

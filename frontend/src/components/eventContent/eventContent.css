@@ -1,0 +1,31 @@
+
+
+.event:hover {
+  cursor: pointer;
+}
+
+.event-content {
+  display: flex;
+  flex-direction: column;
+  border-left: 8px solid RGB(68, 212, 59);
+  padding: 10px 10px 10px 10px;
+  background-color: #ffffff;
+  font-size: 14px;
+  margin-left: 50px;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+  background-color: rgb(3, 155, 193);
+}
+
+.all-day {
+  color: white;
+}
+
+.sample-item {
+  color: black;
+}
+
+.sample-location {
+  color: RGB(68, 212, 59);
+  margin-left: 4px;
+}

@@ -2,14 +2,19 @@ import React, { useEffect } from "react";
 import EventContent from "../eventContent/EventContent.js";
 import convertToActualTime from "../../utils/ConvertTime.js";
 import fixOverLap from "../../utils/FixOverlap.js";
+import "./eventHours.css";
+import moment from "moment";
 
 const EventHours = ({ time, events }) => {
-  
   useEffect(() => {
     if (events) {
       fixOverLap();
     }
   }, [events]);
+
+  // console.log("Event ===> ", moment(events[0]?.startTime).format("LT") - moment(events[1]?.startTime).format("LT"));
+  console.log("Content ", <EventContent />);
+  
 
   return (
     <div className="am-content">
@@ -19,6 +24,7 @@ const EventHours = ({ time, events }) => {
         <div className="half" id={`event-${time.id}`}>
           <div className="event"></div>
         </div>
+
         <div className="event" id={`event-${time.id + 1}`}>
           {events.map(
             (event, index) =>

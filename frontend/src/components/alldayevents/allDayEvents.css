@@ -1,0 +1,15 @@
+.all-day-event-data {
+    padding: 10px 0px 10px 10px;
+    background-color: #fffff4;
+    opacity: 0.9;
+    font-size: 14px;
+    margin: 1px 0;
+    border-left: 8px solid green;
+  
+    margin-left: 120px;
+  }
+  
+  .all-day-event-data:hover {
+    cursor: pointer;
+  }
+  

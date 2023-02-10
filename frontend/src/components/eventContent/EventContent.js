@@ -1,11 +1,20 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import EventsModal from "../modal/EventsModal.js";
 import moment from "moment";
+import "./eventContent.css";
 
 const EventContent = ({ event, contentHeight, contentMargin }) => {
   const [modalShow, setModalShow] = useState(false);
   const [eventData, setEventData] = useState(null);
-  const eventRef = useRef();
+  // const [events, setEvents] = useState([]);
+
+  // useEffect(() => {
+  //   console.log("Event ===> ", moment(event?.startTime).format("LT"));
+  //   setEvents((prev) => [...prev, event] )
+  //   // setEvents([event, ...events]);
+  // }, [event]);
+
+  // console.log("All Events ", events);
 
   return (
     <>
@@ -17,10 +26,10 @@ const EventContent = ({ event, contentHeight, contentMargin }) => {
 
       <div
         className="event event-content"
-        ref={eventRef}
         style={{
           height: contentHeight + "px",
           marginTop: contentMargin + "px",
+          // marginLeft: "100px"
         }}
         id={`${event._id}`}
         onClick={() => {

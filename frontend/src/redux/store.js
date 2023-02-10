@@ -11,6 +11,7 @@ import {
   eventListReducer,
   eventUpdateReducer,
 } from "./reducers/eventReducers";
+import { loadingReducer } from "./reducers/loadingReducers";
 
 const reducer = combineReducers({
   userRegister: userRegisterReducer,
@@ -22,6 +23,7 @@ const reducer = combineReducers({
   eventDetails: eventDetailsReducer,
   eventDelete: eventDeleteReducer,
   eventUpdate: eventUpdateReducer,
+  loading: loadingReducer
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

@@ -1,53 +1,48 @@
-import axios from "axios";
 import {
   EVENT_ALLDAY_CREATE_FAIL,
-  EVENT_ALLDAY_CREATE_REQUEST,
   EVENT_ALLDAY_CREATE_SUCCESS,
   EVENT_ALLDAY_LIST_FAIL,
-  EVENT_ALLDAY_LIST_REQUEST,
   EVENT_ALLDAY_LIST_SUCCESS,
   EVENT_CREATE_FAIL,
-  EVENT_CREATE_REQUEST,
   EVENT_CREATE_SUCCESS,
   EVENT_DELETE_FAIL,
-  EVENT_DELETE_REQUEST,
   EVENT_DELETE_SUCCESS,
   EVENT_DETAILS_FAIL,
-  EVENT_DETAILS_REQUEST,
   EVENT_DETAILS_SUCCESS,
   EVENT_LIST_FAIL,
-  EVENT_LIST_REQUEST,
   EVENT_LIST_SUCCESS,
   EVENT_UPDATE_FAIL,
-  EVENT_UPDATE_REQUEST,
   EVENT_UPDATE_SUCCESS,
 } from "../constants/eventConstants";
+import { LOADING_FALSE, LOADING_TRUE } from "../constants/loadingConstants";
+import axiosConfig from "../../utils/axiosConfig";
+import {
+  createAllDayEventApi,
+  createEventApi,
+  deleteEventApi,
+  getAllDayEventsApi,
+  getAllEventsApi,
+  getEventApi,
+  updateEventApi,
+} from "../../api/eventapis/EventApis";
+import { errorHandler } from "../../utils/errors";
 
 // Create Timed Event
 export const createEvent =
   ({ startTime, endTime, name, location, allDay }) =>
-  async (dispatch, getState) => {
+  async (dispatch) => {
     try {
       dispatch({
-        type: EVENT_CREATE_REQUEST,
+        type: LOADING_TRUE,
       });
 
-      const {
-        userLogin: { userInfo },
-      } = getState();
-
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
-
-      const { data } = await axios.post(
-        "/api/events",
-        { startTime, endTime, name, location, allDay },
-        config
-      );
+      const { data } = await axiosConfig.post(createEventApi, {
+        startTime,
+        endTime,
+        name,
+        location,
+        allDay,
+      });
 
       dispatch({
         type: EVENT_CREATE_SUCCESS,
@@ -56,39 +51,28 @@ export const createEvent =
     } catch (error) {
       dispatch({
         type: EVENT_CREATE_FAIL,
-        payload:
-          error.response && error.response.data
-            ? error.response.data.error
-            : error.message,
+        payload: errorHandler(error),
       });
     }
+
+    dispatch({
+      type: LOADING_FALSE,
+    });
   };
 
 // Create All Day Event
 export const createAllDayEvent =
   ({ name, location }) =>
-  async (dispatch, getState) => {
+  async (dispatch) => {
     try {
       dispatch({
-        type: EVENT_ALLDAY_CREATE_REQUEST,
+        type: LOADING_TRUE,
       });
 
-      const {
-        userLogin: { userInfo },
-      } = getState();
-
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
-
-      const { data } = await axios.post(
-        "/api/events/createAllDay",
-        { name, location },
-        config
-      );
+      const { data } = await axiosConfig.post(createAllDayEventApi, {
+        name,
+        location,
+      });
 
       dispatch({
         type: EVENT_ALLDAY_CREATE_SUCCESS,
@@ -97,33 +81,23 @@ export const createAllDayEvent =
     } catch (error) {
       dispatch({
         type: EVENT_ALLDAY_CREATE_FAIL,
-        payload:
-          error.response && error.response.data
-            ? error.response.data.error
-            : error.message,
+        payload: errorHandler(error),
       });
     }
+
+    dispatch({
+      type: LOADING_FALSE,
+    });
   };
 
 // Fetch Tmed Events
-export const listEvents = () => async (dispatch, getState) => {
+export const listEvents = () => async (dispatch) => {
   try {
     dispatch({
-      type: EVENT_LIST_REQUEST,
+      type: LOADING_TRUE,
     });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo?.token}`,
-      },
-    };
-
-    const { data } = await axios.get("/api/events/allevents", config);
+    const { data } = await axiosConfig.get(getAllEventsApi);
 
     dispatch({
       type: EVENT_LIST_SUCCESS,
@@ -132,32 +106,22 @@ export const listEvents = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: EVENT_LIST_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: errorHandler(error),
+    });
+
+    dispatch({
+      type: LOADING_FALSE,
     });
   }
 };
 
-export const listAllDayEvents = () => async (dispatch, getState) => {
+export const listAllDayEvents = () => async (dispatch) => {
   try {
     dispatch({
-      type: EVENT_ALLDAY_LIST_REQUEST,
+      type: LOADING_TRUE,
     });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-
-    const { data } = await axios.get("/api/events/allDayEvents", config);
+    const { data } = await axiosConfig.get(getAllDayEventsApi);
 
     dispatch({
       type: EVENT_ALLDAY_LIST_SUCCESS,
@@ -166,32 +130,22 @@ export const listAllDayEvents = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: EVENT_ALLDAY_LIST_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: errorHandler(error),
     });
   }
+
+  dispatch({
+    type: LOADING_FALSE,
+  });
 };
 
-export const deleteEvent = (id) => async (dispatch, getState) => {
+export const deleteEvent = (id) => async (dispatch) => {
   try {
     dispatch({
-      type: EVENT_DELETE_REQUEST,
+      type: LOADING_TRUE,
     });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-
-    await axios.delete(`/api/events/delete/${id}`, config);
+    await axiosConfig.delete(deleteEventApi(id));
 
     dispatch({
       type: EVENT_DELETE_SUCCESS,
@@ -199,32 +153,22 @@ export const deleteEvent = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: EVENT_DELETE_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: errorHandler(error),
     });
   }
+
+  dispatch({
+    type: LOADING_FALSE,
+  });
 };
 
-export const updateEvent = (id, event) => async (dispatch, getState) => {
+export const updateEvent = (id, event) => async (dispatch) => {
   try {
     dispatch({
-      type: EVENT_UPDATE_REQUEST,
+      type: LOADING_TRUE,
     });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-
-    const { data } = await axios.put(`/api/events/update/${id}`, event, config);
+    const { data } = await axiosConfig.put(updateEventApi(id), event);
 
     dispatch({
       type: EVENT_UPDATE_SUCCESS,
@@ -233,32 +177,22 @@ export const updateEvent = (id, event) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: EVENT_UPDATE_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: errorHandler(error),
+    });
+
+    dispatch({
+      type: LOADING_FALSE,
     });
   }
 };
 
-export const getEventDetails = (id) => async (dispatch, getState) => {
+export const getEventDetails = (id) => async (dispatch) => {
   try {
     dispatch({
-      type: EVENT_DETAILS_REQUEST,
+      type: LOADING_TRUE,
     });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-
-    const { data } = await axios.get(`/api/events/getEvent/${id}`, config);
+    const { data } = await axiosConfig.get(getEventApi(id));
 
     dispatch({
       type: EVENT_DETAILS_SUCCESS,
@@ -267,10 +201,11 @@ export const getEventDetails = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: EVENT_DETAILS_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: errorHandler(error),
     });
   }
+
+  dispatch({
+    type: LOADING_FALSE,
+  });
 };
