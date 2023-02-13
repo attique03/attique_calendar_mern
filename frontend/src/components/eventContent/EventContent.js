@@ -3,7 +3,13 @@ import EventsModal from "../modal/EventsModal.js";
 import moment from "moment";
 import "./eventContent.css";
 
-const EventContent = ({ event, contentHeight, contentMargin }) => {
+const EventContent = ({
+  event,
+  contentHeight,
+  contentMargin,
+  sortedEvents,
+  contentMarginLeft
+}) => {
   const [modalShow, setModalShow] = useState(false);
   const [eventData, setEventData] = useState(null);
   // const [events, setEvents] = useState([]);
@@ -14,7 +20,9 @@ const EventContent = ({ event, contentHeight, contentMargin }) => {
   //   // setEvents([event, ...events]);
   // }, [event]);
 
-  // console.log("All Events ", events);
+  // if (event) {
+  //   console.log("All Events Sorted ==> ", event, contentMarginLeft);
+  // }
 
   return (
     <>
@@ -29,7 +37,7 @@ const EventContent = ({ event, contentHeight, contentMargin }) => {
         style={{
           height: contentHeight + "px",
           marginTop: contentMargin + "px",
-          // marginLeft: "100px"
+          marginLeft: contentMarginLeft && contentMarginLeft + "px",
         }}
         id={`${event._id}`}
         onClick={() => {

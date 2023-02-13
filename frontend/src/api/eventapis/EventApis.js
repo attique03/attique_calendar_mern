@@ -1,6 +1,6 @@
 export const createEventApi = "/api/events";
 export const createAllDayEventApi = "/api/events/createAllDay";
-export const getAllEventsApi = "/api/events/allevents";
+export const getAllEventsApi = "/api/events";
 export const getAllDayEventsApi = "/api/events/allDayEvents";
 
 export const deleteEventApi = (id) => {

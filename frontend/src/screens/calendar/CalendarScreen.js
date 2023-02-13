@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EventHours from "../../components/eventHours/EventHours";
 import { amHours, pmHours } from "../../utils/Hours.js";
@@ -6,8 +6,10 @@ import AllDayEvents from "../../components/alldayevents/AllDayEvents";
 import { listAllDayEvents, listEvents } from "../../redux/actions/eventActions";
 import { Container } from "react-bootstrap";
 import "./calendar.css";
+import { overLappingEvents } from "../../utils/handleOverLapping";
 
 const CalendarScreen = () => {
+  const [sortedEvents, setSortedEvents] = useState([]);
   const dispatch = useDispatch();
 
   const eventList = useSelector((state) => state.eventList);
@@ -19,12 +21,33 @@ const CalendarScreen = () => {
   const eventsLength = events?.length === 0;
   const eventsAllDayLength = eventsAllDay?.length === 0;
 
+  // const allDay= useMemo(()=>{
+
+  // },[])
+
+  // const timedDays= useMemo(()=>{
+    
+  // },[])
+  
   useEffect(() => {
     if (events?.length === 0 || eventsAllDay?.length === 0) {
-      dispatch(listEvents());
-      dispatch(listAllDayEvents());
+      dispatch(listEvents({ allDay: false }));
+      dispatch(listAllDayEvents({ allDay: true }));
+    }
+
+    if (events.length !== 0) {
+      setSortedEvents(overLappingEvents(events));
     }
   }, [dispatch, eventsLength, eventsAllDayLength, events, eventsAllDay]);
+
+  // let afterOverLapping;
+  // if (events.length !== 0) {
+  //   afterOverLapping = events && overLappingEvents(events);
+  //   setSortedEvents(overLappingEvents(events));
+  //   console.log("after over ===> ", afterOverLapping);
+  // }
+
+  // console.log("Sorted Events: ", sortedEvents);
 
   return (
     <Container>
@@ -43,7 +66,12 @@ const CalendarScreen = () => {
         <div className="am-data">
           {events &&
             amHours.map((hour, index) => (
-              <EventHours time={hour} key={index} events={events} />
+              <EventHours
+                time={hour}
+                key={index}
+                events={events}
+                sortedEvents={events && sortedEvents}
+              />
             ))}
         </div>
       </div>

@@ -4,25 +4,18 @@ const path = require("path");
 // @desc    Fetch Timed Events
 // @route   GET /api/events/allevents
 // access   Private
-const getAllEvents = (req, res) => {
-  Event.find({ user: req.user._id })
-    .then((result) => {
-      const events = result.filter((event) => event.allDay === false);
-      res.json(events);
-    })
-    .catch((err) => {
-      res.json(err);
-    });
-};
+const getEvents = (req, res) => {
+  const { allDay } = req.query;
 
-// @desc    Fetch AllDay Events
-// @route   GET /api/events/allDayEvents
-// access   Private
-const getAllDayEvents = (req, res) => {
   Event.find({ user: req.user._id })
     .then((result) => {
-      const allday = result.filter((event) => event.allDay === true);
-      res.json(allday);
+      if (allDay === "true") {
+        const events = result.filter((event) => event.allDay === true);
+        res.json(events);
+      } else {
+        const events = result.filter((event) => event.allDay === false);
+        res.json(events);
+      }
     })
     .catch((err) => {
       res.json(err);
@@ -78,13 +71,13 @@ const deleteEvent = (req, res) => {
 // @route   POST /api/events
 // access   Private
 const createEvent = (req, res) => {
-  const { startTime, endTime, name, location } = req.body;
+  const { startTime, endTime, name, location, allDay } = req.body;
   const event = new Event({
-    startTime,
-    endTime,
+    startTime: !allDay ? startTime : Date.now(),
+    endTime: !allDay ? endTime : Date.now(),
     name,
     location,
-    allDay: false,
+    allDay,
     user: req.user._id,
   });
 
@@ -98,36 +91,10 @@ const createEvent = (req, res) => {
     });
 };
 
-// @desc    Create AllDay Event
-// @route   POST /api/events/createAllDay
-// access   Private
-const createAllDayEvent = (req, res) => {
-  const { name, location } = req.body;
-
-  const event = new Event({
-    startTime: Date.now(),
-    endTime: Date.now(),
-    name,
-    location,
-    allDay: true,
-    user: req.user._id,
-  });
-  event
-    .save()
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((err) => {
-      res.json(err);
-    });
-};
-
 module.exports = {
   createEvent,
-  getAllEvents,
+  getEvents,
   getEventById,
   updateEvent,
   deleteEvent,
-  createAllDayEvent,
-  getAllDayEvents,
 };

@@ -9,6 +9,7 @@ const connectMongoDB = require("./config/connectDatabase.js");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const User = require("./models/userModel");
+const { authUser } = require("./middleware/authMiddleware");
 
 dotenv.config();
 connectMongoDB();
@@ -21,34 +22,7 @@ app.use(cors());
 
 app.use("/api/users", userRoutes);
 
-app.use(async (req, res, next) => {
-  let token;
-
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    try {
-      token = req.headers.authorization.split(" ")[1];
-
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      //fetching User
-      req.user = await User.findById(decoded.id).select("-password");
-
-      next();
-    } catch (error) {
-      console.error(error);
-      res.status(401);
-      throw new Error("Not Authorized, Token Failed");
-    }
-  }
-
-  if (!token) {
-    res.status(401);
-    throw new Error("Not Authorized, No token");
-  }
-});
+app.use(authUser);
 
 app.use("/api/events", eventRoutes);
 

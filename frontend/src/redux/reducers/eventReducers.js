@@ -1,7 +1,4 @@
 import {
-  EVENT_ALLDAY_CREATE_FAIL,
-  EVENT_ALLDAY_CREATE_RESET,
-  EVENT_ALLDAY_CREATE_SUCCESS,
   EVENT_ALLDAY_LIST_FAIL,
   EVENT_ALLDAY_LIST_RESET,
   EVENT_ALLDAY_LIST_SUCCESS,
@@ -27,19 +24,6 @@ export const eventCreateReducer = (state = {}, action) => {
     case EVENT_CREATE_FAIL:
       return { error: action.payload };
     case EVENT_CREATE_RESET:
-      return {};
-    default:
-      return state;
-  }
-};
-
-export const eventAllDayCreateReducer = (state = {}, action) => {
-  switch (action.type) {
-    case EVENT_ALLDAY_CREATE_SUCCESS:
-      return { success: true, eventAllDay: action.payload };
-    case EVENT_ALLDAY_CREATE_FAIL:
-      return { error: action.payload };
-    case EVENT_ALLDAY_CREATE_RESET:
       return {};
     default:
       return state;

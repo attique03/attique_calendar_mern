@@ -4,22 +4,24 @@ import { useNavigate } from "react-router-dom";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import FormContainer from "../../components/formContainer/FormContainer";
 import {
-  EVENT_ALLDAY_CREATE_RESET,
   EVENT_ALLDAY_LIST_RESET,
   EVENT_CREATE_RESET,
   EVENT_LIST_RESET,
 } from "../../redux/constants/eventConstants";
-import { createAllDayEvent, createEvent } from "../../redux/actions/eventActions";
+import { createEvent } from "../../redux/actions/eventActions";
 import data from "../../utils/CreateEventData";
 import hoursMapper from "../../utils/HoursMapper";
 import AutoComplete from "../../components/autoComplete/AutoComplete";
 
 const EventCreateScreen = () => {
-  const [startTime, setStartTime] = useState();
-  const [endTime, setEndTime] = useState();
-  const [name, setName] = useState("");
-  const [location, setLocation] = useState("");
   const [isAllDay, setIsAllDay] = useState(false);
+  const [formData, setFormData] = useState({
+    startTime: "",
+    endTime: "",
+    name: "",
+    location: "",
+    allDay: false,
+  });
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -34,7 +36,6 @@ const EventCreateScreen = () => {
   useEffect(() => {
     if (success || successAllDayCreate) {
       dispatch({ type: EVENT_CREATE_RESET });
-      dispatch({ type: EVENT_ALLDAY_CREATE_RESET });
       dispatch({ type: EVENT_LIST_RESET });
       dispatch({ type: EVENT_ALLDAY_LIST_RESET });
       navigate("/");
@@ -43,28 +44,32 @@ const EventCreateScreen = () => {
 
   const createEventHandler = (e) => {
     e.preventDefault();
-    if (!isAllDay) {
-      dispatch(
-        createEvent({
-          startTime: new Date().setHours(
-            Object.values(hoursMapper[startTime - 1])[0].split(":")[0],
-            Object.values(hoursMapper[startTime - 1])[0].split(":")[1]
-          ),
-          endTime: new Date().setHours(
-            Object.values(hoursMapper[endTime - 1])[0].split(":")[0],
-            Object.values(hoursMapper[endTime - 1])[0].split(":")[1]
-          ),
-          name,
-          location,
-        })
-      );
-    } else {
-      dispatch(createAllDayEvent({ name, location }));
-    }
+
+    dispatch(
+      createEvent({
+        ...formData,
+        startTime: isAllDay
+          ? Date.now()
+          : new Date().setHours(
+              Object.values(hoursMapper[formData.startTime - 1])[0].split(
+                ":"
+              )[0],
+              Object.values(hoursMapper[formData.startTime - 1])[0].split(
+                ":"
+              )[1]
+            ),
+        endTime: isAllDay
+          ? Date.now()
+          : new Date().setHours(
+              Object.values(hoursMapper[formData.endTime - 1])[0].split(":")[0],
+              Object.values(hoursMapper[formData.endTime - 1])[0].split(":")[1]
+            ),
+      })
+    );
   };
 
   const handleSetLocation = (str) => {
-    setLocation(str);
+    setFormData({ ...formData, location: str });
   };
 
   // const setValue = (str) => {
@@ -86,7 +91,10 @@ const EventCreateScreen = () => {
             type="radio"
             defaultChecked
             id="inline-timed"
-            onChange={(e) => setIsAllDay(false)}
+            onChange={(e) => {
+              setIsAllDay(false);
+              setFormData({ ...formData, allDay: false });
+            }}
           />
           <Form.Check
             inline
@@ -94,7 +102,10 @@ const EventCreateScreen = () => {
             name="group1"
             type="radio"
             id="inline-allday"
-            onChange={(e) => setIsAllDay(true)}
+            onChange={(e) => {
+              setIsAllDay(true);
+              setFormData({ ...formData, allDay: true });
+            }}
           />
         </div>
 
@@ -105,13 +116,21 @@ const EventCreateScreen = () => {
                 <Form.Label>Start Time</Form.Label>
                 <Form.Control
                   as="select"
-                  value={startTime}
+                  startTime
+                  value={formData.startTime}
                   onChange={(e) => {
-                    setStartTime(e.target.value);
-                    if (endTime >= startTime) {
-                      setEndTime(0);
+                    if (formData.endTime >= formData.startTime) {
+                      setFormData({ ...formData, endTime: 0 });
+                      // setEndTime(0);
                     }
+                    setFormData({ ...formData, startTime: e.target.value });
                   }}
+                  // onChange={(e) => {
+                  //   setStartTime(e.target.value);
+                  //   if (endTime >= startTime) {
+                  //     setEndTime(0);
+                  //   }
+                  // }}
                   required
                 >
                   <option value="0">Please Select Start Time</option>
@@ -128,8 +147,10 @@ const EventCreateScreen = () => {
                 <Form.Label>End Time</Form.Label>
                 <Form.Control
                   as="select"
-                  value={endTime}
-                  onChange={(e) => setEndTime(e.target.value)}
+                  value={formData.endTime}
+                  onChange={(e) =>
+                    setFormData({ ...formData, endTime: e.target.value })
+                  }
                   required
                 >
                   <option value="0">Please Select End Time</option>
@@ -137,7 +158,7 @@ const EventCreateScreen = () => {
                     <option
                       value={eTime.id}
                       key={index}
-                      disabled={startTime >= eTime.id ? true : false}
+                      disabled={formData.startTime >= eTime.id ? true : false}
                     >
                       {eTime.content}
                     </option>
@@ -152,8 +173,8 @@ const EventCreateScreen = () => {
           <Form.Control
             type="name"
             placeholder="Enter Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             required
           ></Form.Control>
         </Form.Group>

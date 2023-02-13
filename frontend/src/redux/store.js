@@ -3,7 +3,6 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { userLoginReducer, userRegisterReducer } from "./reducers/userReducers";
 import {
-  eventAllDayCreateReducer,
   eventAllDayListReducer,
   eventCreateReducer,
   eventDeleteReducer,
@@ -17,13 +16,12 @@ const reducer = combineReducers({
   userRegister: userRegisterReducer,
   userLogin: userLoginReducer,
   eventCreate: eventCreateReducer,
-  eventAllDayCreate: eventAllDayCreateReducer,
   eventList: eventListReducer,
   eventAllDayList: eventAllDayListReducer,
   eventDetails: eventDetailsReducer,
   eventDelete: eventDeleteReducer,
   eventUpdate: eventUpdateReducer,
-  loading: loadingReducer
+  loading: loadingReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
