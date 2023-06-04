@@ -12,7 +12,8 @@ import {
   EVENT_ALLDAY_LIST_RESET,
   EVENT_LIST_RESET,
 } from "../constants/eventConstants";
-import { errorHandler } from "../../utils/errors";
+import { errorHandler } from "../../utils/errorHandler";
+import { removeLocalStorage, setLocalStorage } from "../../utils/localStorage";
 
 export const register = (email, password) => async (dispatch) => {
   try {
@@ -37,7 +38,9 @@ export const register = (email, password) => async (dispatch) => {
       payload: data,
     });
 
-    localStorage.setItem("userInfo", JSON.stringify(data));
+    setLocalStorage("userInfo", data);
+
+    // localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: USER_REGISTER_FAIL,
@@ -66,7 +69,8 @@ export const login = (email, password) => async (dispatch) => {
       payload: data,
     });
 
-    localStorage.setItem("userInfo", JSON.stringify(data));
+    setLocalStorage("userInfo", data);
+    // localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
@@ -80,7 +84,8 @@ export const login = (email, password) => async (dispatch) => {
 };
 
 export const logout = () => (dispatch) => {
-  localStorage.removeItem("userInfo");
+  // localStorage.removeItem("userInfo");
+  removeLocalStorage("userInfo");
   dispatch({ type: USER_LOGOUT });
   dispatch({ type: EVENT_LIST_RESET });
   dispatch({ type: EVENT_ALLDAY_LIST_RESET });

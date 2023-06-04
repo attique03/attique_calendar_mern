@@ -1,7 +1,4 @@
 import {
-  EVENT_ALLDAY_LIST_FAIL,
-  EVENT_ALLDAY_LIST_RESET,
-  EVENT_ALLDAY_LIST_SUCCESS,
   EVENT_CREATE_FAIL,
   EVENT_CREATE_RESET,
   EVENT_CREATE_SUCCESS,
@@ -30,30 +27,20 @@ export const eventCreateReducer = (state = {}, action) => {
   }
 };
 
-export const eventListReducer = (state = { events: [] }, action) => {
+export const eventListReducer = (
+  state = { events: [], eventsAllDay: [] },
+  action
+) => {
   switch (action.type) {
     case EVENT_LIST_SUCCESS:
-      return { events: action.payload };
+      return {
+        events: action.payload.events,
+        eventsAllDay: action.payload.eventsAllDay,
+      };
     case EVENT_LIST_FAIL:
       return { error: action.payload };
     case EVENT_LIST_RESET:
       return { events: [] };
-    default:
-      return state;
-  }
-};
-
-export const eventAllDayListReducer = (
-  state = { eventsAllDay: [] },
-  action
-) => {
-  switch (action.type) {
-    case EVENT_ALLDAY_LIST_SUCCESS:
-      return { eventsAllDay: action.payload };
-    case EVENT_ALLDAY_LIST_FAIL:
-      return { error: action.payload };
-    case EVENT_ALLDAY_LIST_RESET:
-      return { eventsAllDay: [] };
     default:
       return state;
   }
@@ -80,6 +67,7 @@ export const eventDeleteReducer = (state = {}, action) => {
       return state;
   }
 };
+
 export const eventUpdateReducer = (state = { event: {} }, action) => {
   switch (action.type) {
     case EVENT_UPDATE_SUCCESS:

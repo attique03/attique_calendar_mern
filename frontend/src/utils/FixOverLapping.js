@@ -1,4 +1,4 @@
-import convertToActualTime from "./ConvertTime";
+import convertToActualTime from "./convertTime";
 
 const overLappingEvents = (events) => {
   const overlappingEvents = [];

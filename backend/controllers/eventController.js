@@ -9,13 +9,7 @@ const getEvents = (req, res) => {
 
   Event.find({ user: req.user._id })
     .then((result) => {
-      if (allDay === "true") {
-        const events = result.filter((event) => event.allDay === true);
-        res.json(events);
-      } else {
-        const events = result.filter((event) => event.allDay === false);
-        res.json(events);
-      }
+      res.json(result);
     })
     .catch((err) => {
       res.json(err);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import EventsModal from "../modal/EventsModal.js";
 import moment from "moment";
 import "./eventContent.css";
@@ -8,21 +8,10 @@ const EventContent = ({
   contentHeight,
   contentMargin,
   sortedEvents,
-  contentMarginLeft
+  contentMarginLeft,
 }) => {
   const [modalShow, setModalShow] = useState(false);
   const [eventData, setEventData] = useState(null);
-  // const [events, setEvents] = useState([]);
-
-  // useEffect(() => {
-  //   console.log("Event ===> ", moment(event?.startTime).format("LT"));
-  //   setEvents((prev) => [...prev, event] )
-  //   // setEvents([event, ...events]);
-  // }, [event]);
-
-  // if (event) {
-  //   console.log("All Events Sorted ==> ", event, contentMarginLeft);
-  // }
 
   return (
     <>

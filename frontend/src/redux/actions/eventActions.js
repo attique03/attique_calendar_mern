@@ -1,6 +1,4 @@
 import {
-  EVENT_ALLDAY_LIST_FAIL,
-  EVENT_ALLDAY_LIST_SUCCESS,
   EVENT_CREATE_FAIL,
   EVENT_CREATE_SUCCESS,
   EVENT_DELETE_FAIL,
@@ -15,15 +13,13 @@ import {
 import { LOADING_FALSE, LOADING_TRUE } from "../constants/loadingConstants";
 import axiosConfig from "../../utils/axiosConfig";
 import {
-  createAllDayEventApi,
   createEventApi,
   deleteEventApi,
-  getAllDayEventsApi,
   getAllEventsApi,
   getEventApi,
   updateEventApi,
 } from "../../api/eventapis/EventApis";
-import { errorHandler } from "../../utils/errors";
+import { errorHandler } from "../../utils/errorHandler";
 
 // Create Timed Event
 export const createEvent =
@@ -59,61 +55,36 @@ export const createEvent =
   };
 
 // Fetch Tmed Events
-export const listEvents =
-  ({ allDay }) =>
-  async (dispatch) => {
-    try {
-      dispatch({
-        type: LOADING_TRUE,
-      });
+export const listEvents = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: LOADING_TRUE,
+    });
 
-      const { data } = await axiosConfig.get(
-        getAllEventsApi + `?allDay=${allDay}`
-      );
+    const { data } = await axiosConfig.get(getAllEventsApi);
 
-      dispatch({
-        type: EVENT_LIST_SUCCESS,
-        payload: data,
-      });
-    } catch (error) {
-      dispatch({
-        type: EVENT_LIST_FAIL,
-        payload: errorHandler(error),
-      });
-
-      dispatch({
-        type: LOADING_FALSE,
-      });
-    }
-  };
-
-export const listAllDayEvents =
-  ({ allDay }) =>
-  async (dispatch) => {
-    try {
-      dispatch({
-        type: LOADING_TRUE,
-      });
-
-      const { data } = await axiosConfig.get(
-        getAllEventsApi + `?allDay=${allDay}`
-      );
-
-      dispatch({
-        type: EVENT_ALLDAY_LIST_SUCCESS,
-        payload: data,
-      });
-    } catch (error) {
-      dispatch({
-        type: EVENT_ALLDAY_LIST_FAIL,
-        payload: errorHandler(error),
-      });
-    }
+    dispatch({
+      type: EVENT_LIST_SUCCESS,
+      payload: {
+        events: data?.filter((event) => event.allDay === false),
+        eventsAllDay: data?.filter((event) => event.allDay === true),
+      },
+    });
 
     dispatch({
       type: LOADING_FALSE,
     });
-  };
+  } catch (error) {
+    dispatch({
+      type: EVENT_LIST_FAIL,
+      payload: errorHandler(error),
+    });
+
+    dispatch({
+      type: LOADING_FALSE,
+    });
+  }
+};
 
 export const deleteEvent = (id) => async (dispatch) => {
   try {
@@ -125,6 +96,10 @@ export const deleteEvent = (id) => async (dispatch) => {
 
     dispatch({
       type: EVENT_DELETE_SUCCESS,
+    });
+
+    dispatch({
+      type: LOADING_FALSE,
     });
   } catch (error) {
     dispatch({
@@ -149,6 +124,10 @@ export const updateEvent = (id, event) => async (dispatch) => {
     dispatch({
       type: EVENT_UPDATE_SUCCESS,
       payload: data,
+    });
+
+    dispatch({
+      type: LOADING_FALSE,
     });
   } catch (error) {
     dispatch({

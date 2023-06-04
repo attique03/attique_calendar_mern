@@ -1,11 +1,12 @@
 import axios from "axios";
+import { getLocalStorage } from "./localStorage";
 
 const instance = axios.create({
   baseURL: "http://127.0.0.1:5000",
 });
 
-const userInfoFromStorage = localStorage.getItem("userInfo")
-  ? JSON.parse(localStorage.getItem("userInfo"))
+const userInfoFromStorage = getLocalStorage("userInfo")
+  ? JSON.parse(getLocalStorage("userInfo"))
   : null;
 
 if (userInfoFromStorage) {

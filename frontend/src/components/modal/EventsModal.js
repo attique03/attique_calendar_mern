@@ -13,14 +13,16 @@ import {
   EVENT_UPDATE_RESET,
 } from "../../redux/constants/eventConstants";
 import AutoComplete from "../autoComplete/AutoComplete";
-import data from "../../utils/CreateEventData";
+import data from "../../utils/createEventData";
+import { setFormDate, setUpdationDate } from "../../utils/datehandler";
 
 const EventsModal = (props) => {
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
-  const [name, setName] = useState("");
-  const [location, setLocation] = useState("");
-  const [cities, setCities] = useState([]);
+  const [formData, setFormData] = useState({
+    startTime: "",
+    endTime: "",
+    name: "",
+    location: "",
+  });
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -36,27 +38,6 @@ const EventsModal = (props) => {
     success: successDelete,
   } = eventDelete;
 
-  const getLocations = async () => {
-    const where = encodeURIComponent(
-      JSON.stringify({
-        name: {
-          $exists: true,
-        },
-      })
-    );
-    const response = await fetch(
-      `https://parseapi.back4app.com/classes/City?limit=1000&order=name&where=${where}`,
-      {
-        headers: {
-          "X-Parse-Application-Id": "q1QfxhDv1KLM5OPzUFzZRIvYERUAFLWEWX9r053J",
-          "X-Parse-Master-Key": "POcTYBgrQ52WGn2lJrcQrYwFFM44uhQ2eqmoy8hS",
-        },
-      }
-    );
-    const data = await response.json();
-    setCities(data);
-  };
-
   useEffect(() => {
     if (success || successDelete) {
       dispatch({ type: EVENT_UPDATE_RESET });
@@ -65,41 +46,23 @@ const EventsModal = (props) => {
 
       navigate("/");
     } else {
-      setStartTime(
-        `${new Date(props.event?.startTime).getHours()}:${
-          new Date(props.event?.startTime).getMinutes() === 0
-            ? "00"
-            : new Date(props.event?.startTime).getMinutes()
-        }`
-      );
-      setEndTime(
-        `${new Date(props.event?.endTime).getHours()}:${
-          new Date(props.event?.endTime).getMinutes() === 0
-            ? "00"
-            : new Date(props.event?.endTime).getMinutes()
-        }`
-      );
-      setName(props.event?.name);
-      setLocation(props.event?.location);
+      setFormData({
+        startTime: setFormDate(props.event?.startTime),
+        endTime: setFormDate(props.event?.endTime),
+        name: props.event?.name,
+        location: props.event?.location,
+      });
     }
-
-    getLocations();
   }, [success, successDelete, dispatch, navigate, props?.event]);
 
-  const editEventHandler = (e) => {
+  const updateEventHandler = (e) => {
     e.preventDefault();
+
     dispatch(
       updateEvent(props.event?._id, {
-        startTime: new Date().setHours(
-          startTime.split(":")[0],
-          startTime.split(":")[1]
-        ),
-        endTime: new Date().setHours(
-          endTime.split(":")[0],
-          endTime.split(":")[1]
-        ),
-        name,
-        location,
+        ...formData,
+        startTime: setUpdationDate(formData.startTime),
+        endTime: setUpdationDate(formData.endTime),
       })
     );
   };
@@ -110,12 +73,12 @@ const EventsModal = (props) => {
   };
 
   const handleSetLocation = (str) => {
-    setLocation(str);
+    setFormData({ ...formData, location: str });
   };
 
-  const setValue = (str) => {
-    setLocation(str);
-  };
+  // const setValue = (str) => {
+  //   setLocation(str);
+  // };
 
   return (
     <Modal
@@ -123,7 +86,6 @@ const EventsModal = (props) => {
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
-      // style={{paddingLeft: "215px !important"}}
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
@@ -138,7 +100,7 @@ const EventsModal = (props) => {
           {loadingDelete && <Loader />}
           {errorDelete && <Message variant="danger">{errorDelete}</Message>}
 
-          <Form onSubmit={editEventHandler}>
+          <Form onSubmit={updateEventHandler}>
             {!props.event?.allDay && (
               <Row>
                 <Col md={6}>
@@ -146,10 +108,15 @@ const EventsModal = (props) => {
                     <Form.Label>Start Time</Form.Label>
                     <Form.Control
                       as="select"
-                      value={startTime}
-                      onChange={(e) => setStartTime(e.target.value)}
+                      value={formData.startTime}
+                      onChange={(e) => {
+                        if (formData.endTime >= formData.startTime) {
+                          setFormData({ ...formData, endTime: "0" });
+                        }
+                        setFormData({ ...formData, startTime: e.target.value });
+                      }}
                       required
-                      defaultValue={startTime}
+                      defaultValue={formData.startTime}
                     >
                       {data.map((startTime, index) => (
                         <option value={startTime.value} key={index}>
@@ -164,17 +131,15 @@ const EventsModal = (props) => {
                     <Form.Label>End Time</Form.Label>
                     <Form.Control
                       as="select"
-                      value={endTime}
-                      onChange={(e) => setEndTime(e.target.value)}
+                      value={formData.endTime}
+                      onChange={(e) =>
+                        setFormData({ ...formData, endTime: e.target.value })
+                      }
                       required
-                      defaultValue={endTime}
+                      defaultValue={formData.endTime}
                     >
                       {data.map((eTime, index) => (
-                        <option
-                          value={eTime.value}
-                          key={index}
-                          // disabled={startTime >= eTime.id ? true : false}
-                        >
+                        <option value={eTime.value} key={index}>
                           {eTime.content}
                         </option>
                       ))}
@@ -189,34 +154,17 @@ const EventsModal = (props) => {
               <Form.Control
                 type="name"
                 placeholder="Enter Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={formData.name}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
                 required
               ></Form.Control>
             </Form.Group>
 
-            {/* <Form.Group controlId="location" className="pt-3">
-              <Form.Label>Location</Form.Label>
-              <Form.Control
-                as="select"
-                value={location}
-                onChange={(e) => {
-                  setLocation(e.target.value);
-                }}
-                required
-              >
-                <option value="">Please Select Location</option>
-                {cities?.results?.map((city, index) => (
-                  <option value={city.name} key={index}>
-                    {city.name}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group> */}
-
             <AutoComplete
-              value={location}
-              setValue={setValue}
+              value={formData.location}
+              // setValue={setValue}
               handleSetLocation={handleSetLocation}
             />
 

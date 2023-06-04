@@ -4,14 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import FormContainer from "../../components/formContainer/FormContainer";
 import {
-  EVENT_ALLDAY_LIST_RESET,
   EVENT_CREATE_RESET,
   EVENT_LIST_RESET,
 } from "../../redux/constants/eventConstants";
 import { createEvent } from "../../redux/actions/eventActions";
-import data from "../../utils/CreateEventData";
-import hoursMapper from "../../utils/HoursMapper";
+import data from "../../utils/createEventData";
 import AutoComplete from "../../components/autoComplete/AutoComplete";
+import { setCreationDate } from "../../utils/datehandler";
 
 const EventCreateScreen = () => {
   const [isAllDay, setIsAllDay] = useState(false);
@@ -29,18 +28,13 @@ const EventCreateScreen = () => {
   const eventCreate = useSelector((state) => state.eventCreate);
   const { error, success } = eventCreate;
 
-  const eventAllDayCreate = useSelector((state) => state.eventAllDayCreate);
-  const { error: errorAllDayCreate, success: successAllDayCreate } =
-    eventAllDayCreate;
-
   useEffect(() => {
-    if (success || successAllDayCreate) {
+    if (success) {
       dispatch({ type: EVENT_CREATE_RESET });
       dispatch({ type: EVENT_LIST_RESET });
-      dispatch({ type: EVENT_ALLDAY_LIST_RESET });
       navigate("/");
     }
-  }, [success, successAllDayCreate, dispatch, navigate]);
+  }, [success, dispatch, navigate]);
 
   const createEventHandler = (e) => {
     e.preventDefault();
@@ -48,22 +42,8 @@ const EventCreateScreen = () => {
     dispatch(
       createEvent({
         ...formData,
-        startTime: isAllDay
-          ? Date.now()
-          : new Date().setHours(
-              Object.values(hoursMapper[formData.startTime - 1])[0].split(
-                ":"
-              )[0],
-              Object.values(hoursMapper[formData.startTime - 1])[0].split(
-                ":"
-              )[1]
-            ),
-        endTime: isAllDay
-          ? Date.now()
-          : new Date().setHours(
-              Object.values(hoursMapper[formData.endTime - 1])[0].split(":")[0],
-              Object.values(hoursMapper[formData.endTime - 1])[0].split(":")[1]
-            ),
+        startTime: isAllDay ? Date.now() : setCreationDate(formData.startTime),
+        endTime: isAllDay ? Date.now() : setCreationDate(formData.endTime),
       })
     );
   };
@@ -80,7 +60,6 @@ const EventCreateScreen = () => {
     <FormContainer>
       <h1 className="mb-4">Create Event</h1>
       {error && <div class="error">{error}</div>}
-      {errorAllDayCreate && <div class="error">{errorAllDayCreate}</div>}
 
       <Form onSubmit={createEventHandler}>
         <div className="mb-3">
@@ -121,16 +100,9 @@ const EventCreateScreen = () => {
                   onChange={(e) => {
                     if (formData.endTime >= formData.startTime) {
                       setFormData({ ...formData, endTime: 0 });
-                      // setEndTime(0);
                     }
                     setFormData({ ...formData, startTime: e.target.value });
                   }}
-                  // onChange={(e) => {
-                  //   setStartTime(e.target.value);
-                  //   if (endTime >= startTime) {
-                  //     setEndTime(0);
-                  //   }
-                  // }}
                   required
                 >
                   <option value="0">Please Select Start Time</option>

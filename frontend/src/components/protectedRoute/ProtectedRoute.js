@@ -4,8 +4,11 @@ import { useSelector } from "react-redux";
 const ProtectedRoute = ({ children }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
-  
-  if (!userInfo) {
+
+  const loading = useSelector((state) => state.loading);
+  const { loading: loadingState } = loading;
+
+  if (!userInfo && !loadingState) {
     return <Navigate to="/login" replace />;
   }
 
